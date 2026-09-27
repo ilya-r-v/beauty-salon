@@ -16,8 +16,8 @@ public class BookingRepositoryJdbc implements BookingRepository {
 
     @Override
     public Booking save(Booking booking) {
-        String sql = "INSERT INTO booking (id, service_variant_id, status, master_id, booking_time, client_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO booking (id, service_variant_id, status, booking_time, client_id) " +
+                "VALUES (?, ?, ?, ?, ?)";
         UUID id = UUID.randomUUID();
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -25,9 +25,8 @@ public class BookingRepositoryJdbc implements BookingRepository {
             ps.setObject(1, id);
             ps.setObject(2, booking.getServiceVariantId());
             ps.setString(3, booking.getStatus().name());
-            ps.setObject(4, booking.getMasterId());
-            ps.setTimestamp(5, Timestamp.valueOf(booking.getTime()));
-            ps.setObject(6, booking.getClientId());
+            ps.setTimestamp(4, Timestamp.valueOf(booking.getTime()));
+            ps.setObject(5, booking.getClientId());
 
             ps.executeUpdate();
             booking.setId(id);
@@ -74,17 +73,16 @@ public class BookingRepositoryJdbc implements BookingRepository {
 
     @Override
     public Booking update(Booking booking) {
-        String sql = "UPDATE booking SET service_variant_id = ?, status = ?, master_id = ?, " +
+        String sql = "UPDATE booking SET service_variant_id = ?, status = ?, " +
                 "booking_time = ?, client_id = ? WHERE id = ?";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setObject(1, booking.getServiceVariantId());
             ps.setString(2, booking.getStatus().name());
-            ps.setObject(3, booking.getMasterId());
-            ps.setTimestamp(4, Timestamp.valueOf(booking.getTime()));
-            ps.setObject(5, booking.getClientId());
-            ps.setObject(6, booking.getId());
+            ps.setTimestamp(3, Timestamp.valueOf(booking.getTime()));
+            ps.setObject(4, booking.getClientId());
+            ps.setObject(5, booking.getId());
 
             int affected = ps.executeUpdate();
             if (affected == 0) {
@@ -145,7 +143,10 @@ public class BookingRepositoryJdbc implements BookingRepository {
 
     @Override
     public List<Booking> filterByMaster(UUID masterId) {
-        String sql = "SELECT * FROM booking WHERE master_id = ? ORDER BY booking_time";
+        String sql = "SELECT b.* FROM booking b " +
+                "JOIN service_variant sv ON b.service_variant_id = sv.id " +
+                "JOIN service s ON sv.service_id = s.id " +
+                "WHERE s.master_id = ? ORDER BY b.booking_time";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setObject(1, masterId);
@@ -177,13 +178,18 @@ public class BookingRepositoryJdbc implements BookingRepository {
     }
 
     @Override
-    public boolean existsOverlapForMaster(UUID masterId, LocalDateTime time) {
+    public boolean existsOverlapForServiceVariant(UUID serviceVariantId, LocalDateTime time) {
         // считаем слот занятым, если у мастера уже есть активная запись на тот же час.
-        String sql = "SELECT COUNT(*) FROM booking WHERE master_id = ? AND status <> 'CANCELLED' " +
-                "AND booking_time = ?";
+        String sql = "SELECT COUNT(*) FROM booking b " +
+                "JOIN service_variant booked_sv ON b.service_variant_id = booked_sv.id " +
+                "JOIN service booked_s ON booked_sv.service_id = booked_s.id " +
+                "JOIN service_variant requested_sv ON requested_sv.id = ? " +
+                "JOIN service requested_s ON requested_sv.service_id = requested_s.id " +
+                "WHERE booked_s.master_id = requested_s.master_id AND b.status <> 'CANCELLED' " +
+                "AND b.booking_time = ?";
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setObject(1, masterId);
+            ps.setObject(1, serviceVariantId);
             ps.setTimestamp(2, Timestamp.valueOf(time));
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
@@ -213,7 +219,6 @@ public class BookingRepositoryJdbc implements BookingRepository {
         b.setId((UUID) rs.getObject("id"));
         b.setServiceVariantId((UUID) rs.getObject("service_variant_id"));
         b.setStatus(BookingStatus.valueOf(rs.getString("status")));
-        b.setMasterId((UUID) rs.getObject("master_id"));
         b.setTime(rs.getTimestamp("booking_time").toLocalDateTime());
         b.setClientId((UUID) rs.getObject("client_id"));
         return b;

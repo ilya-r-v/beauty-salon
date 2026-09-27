@@ -11,10 +11,10 @@ import ru.mirea.beautysalon.repository.ServiceTypeRepository;
 import ru.mirea.beautysalon.repository.ServiceVariantRepository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 // Бизнес-правила для каталога услуг Нельзя создать услугу с несуществующим мастером. Нельзя создать услугу с несуществующим типом.
@@ -94,9 +94,14 @@ public class ServiceCatalogService {
     }
 
     public List<ServiceEntity> searchByTitle(String titlePart) {
-        return serviceEntityRepository.findAll().stream()
-                .filter(s -> s.getTitle().toLowerCase().contains(titlePart.toLowerCase()))
-                .collect(Collectors.toList());
+        String normalizedTitlePart = titlePart.toLowerCase();
+        List<ServiceEntity> result = new ArrayList<>();
+        for (ServiceEntity service : serviceEntityRepository.findAll()) {
+            if (service.getTitle().toLowerCase().contains(normalizedTitlePart)) {
+                result.add(service);
+            }
+        }
+        return result;
     }
 
     public ServiceVariant createVariant(ServiceVariant variant) {
@@ -131,14 +136,14 @@ public class ServiceCatalogService {
     }
 
     public List<ServiceVariant> sortByPrice(List<ServiceVariant> variants) {
-        return variants.stream()
-                .sorted(Comparator.comparing(ServiceVariant::getPrice))
-                .collect(Collectors.toList());
+        List<ServiceVariant> result = new ArrayList<>(variants);
+        result.sort(Comparator.comparing(ServiceVariant::getPrice));
+        return result;
     }
 
     public List<ServiceVariant> sortByTitle(List<ServiceVariant> variants) {
-        return variants.stream()
-                .sorted(Comparator.comparing(ServiceVariant::getTitle))
-                .collect(Collectors.toList());
+        List<ServiceVariant> result = new ArrayList<>(variants);
+        result.sort(Comparator.comparing(ServiceVariant::getTitle));
+        return result;
     }
 }

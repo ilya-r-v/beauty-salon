@@ -7,18 +7,16 @@ public class Booking {
     private UUID id;
     private UUID serviceVariantId;
     private BookingStatus status;
-    private UUID masterId;
     private LocalDateTime time;
     private UUID clientId;
 
     public Booking() {}
 
     public Booking(UUID id, UUID serviceVariantId, BookingStatus status,
-                   UUID masterId, LocalDateTime time, UUID clientId) {
+                   LocalDateTime time, UUID clientId) {
         this.id = id;
         this.serviceVariantId = serviceVariantId;
         this.status = status;
-        this.masterId = masterId;
         this.time = time;
         this.clientId = clientId;
     }
@@ -31,9 +29,6 @@ public class Booking {
 
     public BookingStatus getStatus() { return status; }
     public void setStatus(BookingStatus status) { this.status = status; }
-
-    public UUID getMasterId() { return masterId; }
-    public void setMasterId(UUID masterId) { this.masterId = masterId; }
 
     public LocalDateTime getTime() { return time; }
     public void setTime(LocalDateTime time) { this.time = time; }

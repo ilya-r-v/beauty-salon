@@ -29,5 +29,5 @@ public interface BookingRepository {
     List<Booking> filterByMaster(UUID masterId);
     List<Booking> filterByDateRange(LocalDateTime from, LocalDateTime to);
 
-    boolean existsOverlapForMaster(UUID masterId, LocalDateTime time);
+    boolean existsOverlapForServiceVariant(UUID serviceVariantId, LocalDateTime time);
 }

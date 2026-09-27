@@ -35,7 +35,7 @@ public class Main {
     private static final ServiceVariantRepository serviceVariantRepository = new ServiceVariantRepositoryJdbc();
 
     private static final BookingService bookingService =
-            new BookingService(bookingRepository, clientRepository, masterProfileRepository);
+            new BookingService(bookingRepository, clientRepository);
     private static final ClientService clientService =
             new ClientService(clientRepository, roleRepository, masterProfileRepository, bookingRepository);
     private static final ServiceCatalogService catalogService =
@@ -251,13 +251,11 @@ public class Main {
 
     private static void createBooking() {
         UUID clientId = readUuid("ID клиента: ");
-        UUID masterId = readUuid("ID мастера: ");
         UUID serviceVariantId = readUuid("ID варианта услуги: ");
         LocalDateTime time = readDateTime("Дата и время (yyyy-MM-ddTHH:mm), напр. 2026-10-01T14:00: ");
 
         Booking booking = new Booking();
         booking.setClientId(clientId);
-        booking.setMasterId(masterId);
         booking.setServiceVariantId(serviceVariantId);
         booking.setTime(time);
         booking.setStatus(BookingStatus.PENDING);
@@ -337,14 +335,18 @@ public class Main {
         List<MasterProfile> allMasters = clientService.findAllMasters();
         List<ServiceVariant> allVariants = catalogService.findAllVariants();
 
-        double totalRevenue = allBookings.stream()
-                .filter(b -> b.getStatus() == BookingStatus.COMPLETED)
-                .mapToDouble(b -> allVariants.stream()
-                        .filter(v -> v.getId().equals(b.getServiceVariantId()))
-                        .findFirst()
-                        .map(v -> v.getPrice().doubleValue())
-                        .orElse(0.0))
-                .sum();
+        double totalRevenue = 0.0;
+        for (Booking booking : allBookings) {
+            if (booking.getStatus() != BookingStatus.COMPLETED) {
+                continue;
+            }
+            for (ServiceVariant variant : allVariants) {
+                if (variant.getId().equals(booking.getServiceVariantId())) {
+                    totalRevenue += variant.getPrice().doubleValue();
+                    break;
+                }
+            }
+        }
 
         System.out.println("\n--- Статистика ---");
         System.out.println("Всего клиентов: " + allClients.size());

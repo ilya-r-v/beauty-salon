@@ -2,6 +2,7 @@ package ru.mirea.beautysalon.service;
 
 import ru.mirea.beautysalon.exception.BusinessException;
 import ru.mirea.beautysalon.exception.EntityNotFoundException;
+import ru.mirea.beautysalon.model.Booking;
 import ru.mirea.beautysalon.model.Client;
 import ru.mirea.beautysalon.model.MasterProfile;
 import ru.mirea.beautysalon.repository.BookingRepository;
@@ -9,10 +10,10 @@ import ru.mirea.beautysalon.repository.ClientRepository;
 import ru.mirea.beautysalon.repository.MasterProfileRepository;
 import ru.mirea.beautysalon.repository.RoleRepository;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 // Бизнес-правила для клиентов/мастеров Нельзя создать клиента без имени или телефона. Нельзя указать несуществующую роль.
@@ -67,10 +68,15 @@ public class ClientService {
 
     public void delete(UUID id) {
         getById(id);
-        boolean hasActiveBookings = bookingRepository.findAll().stream()
-                .anyMatch(b -> b.getClientId().equals(id)
-                        && b.getStatus() != ru.mirea.beautysalon.model.BookingStatus.COMPLETED
-                        && b.getStatus() != ru.mirea.beautysalon.model.BookingStatus.CANCELLED);
+        boolean hasActiveBookings = false;
+        for (Booking booking : bookingRepository.findAll()) {
+            if (booking.getClientId().equals(id)
+                    && booking.getStatus() != ru.mirea.beautysalon.model.BookingStatus.COMPLETED
+                    && booking.getStatus() != ru.mirea.beautysalon.model.BookingStatus.CANCELLED) {
+                hasActiveBookings = true;
+                break;
+            }
+        }
         if (hasActiveBookings) {
             throw new BusinessException("Нельзя удалить клиента с активными записями");
         }
@@ -96,21 +102,30 @@ public class ClientService {
 
     // поиск
     public List<Client> searchByName(String namePart) {
-        return clientRepository.findAll().stream()
-                .filter(c -> c.getName().toLowerCase().contains(namePart.toLowerCase()))
-                .collect(Collectors.toList());
+        String normalizedNamePart = namePart.toLowerCase();
+        List<Client> result = new ArrayList<>();
+        for (Client client : clientRepository.findAll()) {
+            if (client.getName().toLowerCase().contains(normalizedNamePart)) {
+                result.add(client);
+            }
+        }
+        return result;
     }
 
     public List<Client> searchByPhone(String phonePart) {
-        return clientRepository.findAll().stream()
-                .filter(c -> c.getPhone().contains(phonePart))
-                .collect(Collectors.toList());
+        List<Client> result = new ArrayList<>();
+        for (Client client : clientRepository.findAll()) {
+            if (client.getPhone().contains(phonePart)) {
+                result.add(client);
+            }
+        }
+        return result;
     }
 
     // сортировка
     public List<Client> sortByName(List<Client> clients) {
-        return clients.stream()
-                .sorted(Comparator.comparing(Client::getName))
-                .collect(Collectors.toList());
+        List<Client> result = new ArrayList<>(clients);
+        result.sort(Comparator.comparing(Client::getName));
+        return result;
     }
 }

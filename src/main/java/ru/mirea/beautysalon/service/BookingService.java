@@ -6,15 +6,15 @@ import ru.mirea.beautysalon.model.Booking;
 import ru.mirea.beautysalon.model.BookingStatus;
 import ru.mirea.beautysalon.repository.BookingRepository;
 import ru.mirea.beautysalon.repository.ClientRepository;
-import ru.mirea.beautysalon.repository.MasterProfileRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 // Бизнес-правила по записи на услугу. Нельзя создать запись с несуществующим клиентом. Нельзя создать запись на время в прошлом.
 // Нельзя создать запись, если мастер уже занят в это время. Нельзя выполнить запрещённый переход статуса.
@@ -23,7 +23,6 @@ public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final ClientRepository clientRepository;
-    private final MasterProfileRepository masterProfileRepository;
 
     private static final Map<BookingStatus, Set<BookingStatus>> ALLOWED_TRANSITIONS = Map.of(
             BookingStatus.PENDING, Set.of(BookingStatus.CONFIRMED, BookingStatus.CANCELLED),
@@ -32,11 +31,9 @@ public class BookingService {
             BookingStatus.CANCELLED, Set.of()
     );
 
-    public BookingService(BookingRepository bookingRepository, ClientRepository clientRepository,
-                           MasterProfileRepository masterProfileRepository) {
+    public BookingService(BookingRepository bookingRepository, ClientRepository clientRepository) {
         this.bookingRepository = bookingRepository;
         this.clientRepository = clientRepository;
-        this.masterProfileRepository = masterProfileRepository;
     }
 
     public Booking create(Booking booking) {
@@ -109,21 +106,24 @@ public class BookingService {
 
     // сортировка
     public List<Booking> sortByTime(List<Booking> bookings) {
-        return bookings.stream()
-                .sorted(Comparator.comparing(Booking::getTime))
-                .collect(Collectors.toList());
+        List<Booking> result = new ArrayList<>(bookings);
+        result.sort(Comparator.comparing(Booking::getTime));
+        return result;
     }
 
     public List<Booking> sortByStatus(List<Booking> bookings) {
-        return bookings.stream()
-                .sorted(Comparator.comparing(Booking::getStatus))
-                .collect(Collectors.toList());
+        List<Booking> result = new ArrayList<>(bookings);
+        result.sort(Comparator.comparing(Booking::getStatus));
+        return result;
     }
 
     // статистика
     public Map<BookingStatus, Long> countByStatus() {
-        return bookingRepository.findAll().stream()
-                .collect(Collectors.groupingBy(Booking::getStatus, Collectors.counting()));
+        Map<BookingStatus, Long> result = new EnumMap<>(BookingStatus.class);
+        for (Booking booking : bookingRepository.findAll()) {
+            result.merge(booking.getStatus(), 1L, Long::sum);
+        }
+        return result;
     }
 
     //проверки бизнес правил
@@ -135,13 +135,10 @@ public class BookingService {
         if (booking.getServiceVariantId() == null) {
             throw new BusinessException("Не указан вариант услуги");
         }
-        if (booking.getMasterId() == null || !masterProfileRepository.existsById(booking.getMasterId())) {
-            throw new BusinessException("Указан несуществующий мастер");
-        }
         if (booking.getTime() == null || booking.getTime().isBefore(LocalDateTime.now())) {
             throw new BusinessException("Нельзя создать запись на прошедшее время");
         }
-        if (bookingRepository.existsOverlapForMaster(booking.getMasterId(), booking.getTime())) {
+        if (bookingRepository.existsOverlapForServiceVariant(booking.getServiceVariantId(), booking.getTime())) {
             throw new BusinessException("Мастер уже занят в это время");
         }
     }
