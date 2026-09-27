@@ -6,6 +6,7 @@ import ru.mirea.beautysalon.model.Booking;
 import ru.mirea.beautysalon.model.BookingStatus;
 import ru.mirea.beautysalon.repository.BookingRepository;
 import ru.mirea.beautysalon.repository.ClientRepository;
+import ru.mirea.beautysalon.repository.MasterProfileRepository;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -15,15 +16,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-
 // Бизнес-правила по записи на услугу. Нельзя создать запись с несуществующим клиентом. Нельзя создать запись на время в прошлом.
 // Нельзя создать запись, если мастер уже занят в это время. Нельзя выполнить запрещённый переход статуса.
 // Нельзя изменять/удалять запись в статусе COMPLETED. Нельзя создать запись без указания варианта услуги (не должно быть null).
-
 public class BookingService {
 
     private final BookingRepository bookingRepository;
     private final ClientRepository clientRepository;
+    private final MasterProfileRepository masterProfileRepository;
 
     private static final Map<BookingStatus, Set<BookingStatus>> ALLOWED_TRANSITIONS = Map.of(
             BookingStatus.PENDING, Set.of(BookingStatus.CONFIRMED, BookingStatus.CANCELLED),
@@ -32,9 +32,11 @@ public class BookingService {
             BookingStatus.CANCELLED, Set.of()
     );
 
-    public BookingService(BookingRepository bookingRepository, ClientRepository clientRepository) {
+    public BookingService(BookingRepository bookingRepository, ClientRepository clientRepository,
+                           MasterProfileRepository masterProfileRepository) {
         this.bookingRepository = bookingRepository;
         this.clientRepository = clientRepository;
+        this.masterProfileRepository = masterProfileRepository;
     }
 
     public Booking create(Booking booking) {
@@ -133,8 +135,8 @@ public class BookingService {
         if (booking.getServiceVariantId() == null) {
             throw new BusinessException("Не указан вариант услуги");
         }
-        if (booking.getMasterId() == null) {
-            throw new BusinessException("Не указан мастер");
+        if (booking.getMasterId() == null || !masterProfileRepository.existsById(booking.getMasterId())) {
+            throw new BusinessException("Указан несуществующий мастер");
         }
         if (booking.getTime() == null || booking.getTime().isBefore(LocalDateTime.now())) {
             throw new BusinessException("Нельзя создать запись на прошедшее время");
