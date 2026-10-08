@@ -1,0 +1,16 @@
+target/
+dependency-reduced-pom.xml
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.classpath
+.project
+.settings/
+bin/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+*.xlsx
