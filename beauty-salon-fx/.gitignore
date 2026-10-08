@@ -14,3 +14,4 @@ bin/
 Thumbs.db
 *.log
 *.xlsx
+src/main/resources/database.properties
