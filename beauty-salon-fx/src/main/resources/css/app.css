@@ -1,0 +1,105 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #f4f1f6;
+}
+
+.header-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6a3d8f;
+    -fx-padding: 10 0 10 15;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #ece3f2;
+}
+
+.table-view {
+    -fx-background-color: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: #d8c3ea;
+}
+
+.table-view .column-header-background .label {
+    -fx-text-fill: #3b2250;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e3d3f0;
+    -fx-text-fill: black;
+}
+
+.button {
+    -fx-background-color: #8b4fc0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #7a3db0;
+}
+
+.button-secondary {
+    -fx-background-color: #cfc1dd;
+    -fx-text-fill: #3b2250;
+}
+
+.button-secondary:hover {
+    -fx-background-color: #bca8d0;
+}
+
+.button-danger {
+    -fx-background-color: #c0455a;
+}
+
+.button-danger:hover {
+    -fx-background-color: #a8384b;
+}
+
+.text-field, .combo-box, .date-picker {
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-border-color: #cfc1dd;
+}
+
+.error-label {
+    -fx-text-fill: #c0455a;
+    -fx-font-weight: bold;
+}
+
+.success-label {
+    -fx-text-fill: #2f8f4f;
+    -fx-font-weight: bold;
+}
+
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-padding: 16;
+    -fx-border-color: #e0d4ea;
+    -fx-border-radius: 8;
+}
+
+.stat-value {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6a3d8f;
+}
+
+.stat-title {
+    -fx-text-fill: #6b5a78;
+    -fx-font-size: 12px;
+}
+
+.toolbar-box {
+    -fx-padding: 10;
+    -fx-spacing: 8;
+    -fx-background-color: #ece3f2;
+}
