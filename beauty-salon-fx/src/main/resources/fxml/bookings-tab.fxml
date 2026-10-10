@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.mirea.beautysalon.fx.controller.BookingsTabController" spacing="8">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Поиск -->
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar-box">
+        <Label text="Поиск:"/>
+        <ChoiceBox fx:id="searchTypeChoice"/>
+        <TextField fx:id="searchField" promptText="введите текст..." prefWidth="220"/>
+        <Button text="Найти" onAction="#onSearch"/>
+        <Button text="Сбросить" styleClass="button-secondary" onAction="#onResetSearch"/>
+    </HBox>
+
+    <!-- Фильтрация и сортировка -->
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar-box">
+        <Label text="Статус:"/>
+        <ComboBox fx:id="statusFilterCombo" prefWidth="140"/>
+        <Label text="Мастер:"/>
+        <ComboBox fx:id="masterFilterCombo" prefWidth="160"/>
+        <Label text="С:"/>
+        <DatePicker fx:id="dateFromPicker" prefWidth="130"/>
+        <Label text="По:"/>
+        <DatePicker fx:id="dateToPicker" prefWidth="130"/>
+        <Button text="Применить фильтр" onAction="#onApplyFilter"/>
+        <Button text="Сбросить фильтр" styleClass="button-secondary" onAction="#onResetFilter"/>
+    </HBox>
+
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar-box">
+        <Label text="Сортировка:"/>
+        <Button text="По дате" styleClass="button-secondary" onAction="#onSortByTime"/>
+        <Button text="По статусу" styleClass="button-secondary" onAction="#onSortByStatus"/>
+    </HBox>
+
+    <!-- Таблица -->
+    <TableView fx:id="bookingTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="clientColumn" text="Клиент" prefWidth="150"/>
+            <TableColumn fx:id="masterColumn" text="Мастер" prefWidth="150"/>
+            <TableColumn fx:id="variantColumn" text="Услуга" prefWidth="200"/>
+            <TableColumn fx:id="priceColumn" text="Цена" prefWidth="90"/>
+            <TableColumn fx:id="statusColumn" text="Статус" prefWidth="110"/>
+            <TableColumn fx:id="timeColumn" text="Дата и время" prefWidth="140"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="messageLabel"/>
+
+    <!-- Действия -->
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Button text="Добавить" onAction="#onAdd"/>
+        <Button text="Изменить" onAction="#onEdit"/>
+        <Button text="Удалить" styleClass="button-danger" onAction="#onDelete"/>
+        <Button text="Обновить" styleClass="button-secondary" onAction="#onRefresh"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Экспорт в Excel" styleClass="button-secondary" onAction="#onExport"/>
+    </HBox>
+</VBox>

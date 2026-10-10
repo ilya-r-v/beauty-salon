@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+  <!-- Главное окно. Корень — BorderPane, в центре вкладки.
+  Каждая вкладка подключена через fx:include у неё свой FXML-файл -->
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.mirea.beautysalon.fx.controller.MainController">
+    <top>
+        <Label text="Салон красоты — информационная система" styleClass="header-label" BorderPane.alignment="CENTER_LEFT"/>
+    </top>
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Записи на услугу">
+                    <content>
+                        <fx:include source="bookings-tab.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Клиенты и мастера">
+                    <content>
+                        <fx:include source="clients-tab.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Услуги">
+                    <content>
+                        <fx:include source="services-tab.fxml"/>
+                    </content>
+                </Tab>
+                <Tab text="Статистика">
+                    <content>
+                        <fx:include source="statistics-tab.fxml"/>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>

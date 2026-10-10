@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.mirea.beautysalon.fx.controller.BookingDialogController" spacing="10" prefWidth="380">
+    <padding>
+        <Insets top="16" right="16" bottom="16" left="16"/>
+    </padding>
+
+    <Label text="Клиент:"/>
+    <ComboBox fx:id="clientCombo" maxWidth="Infinity"/>
+
+    <Label text="Мастер:"/>
+    <ComboBox fx:id="masterCombo" maxWidth="Infinity"/>
+
+    <Label text="Вариант услуги:"/>
+    <ComboBox fx:id="variantCombo" maxWidth="Infinity"/>
+
+    <HBox spacing="10">
+        <VBox spacing="4">
+            <Label text="Дата:"/>
+            <DatePicker fx:id="datePicker"/>
+        </VBox>
+        <VBox spacing="4">
+            <Label text="Время (ЧЧ:ММ):"/>
+            <TextField fx:id="timeField" promptText="14:00"/>
+        </VBox>
+    </HBox>
+
+    <VBox fx:id="statusBox" spacing="4">
+        <Label text="Статус:"/>
+        <ComboBox fx:id="statusCombo" maxWidth="Infinity"/>
+    </VBox>
+
+    <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Отмена" styleClass="button-secondary" onAction="#onCancel"/>
+        <Button text="Сохранить" onAction="#onSave"/>
+    </HBox>
+</VBox>
