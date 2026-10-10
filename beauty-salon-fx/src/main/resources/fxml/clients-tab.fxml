@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.mirea.beautysalon.fx.controller.ClientsTabController" spacing="8">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar-box">
+        <Label text="Поиск:"/>
+        <ChoiceBox fx:id="searchTypeChoice"/>
+        <TextField fx:id="searchField" promptText="введите текст..." prefWidth="220"/>
+        <Button text="Найти" onAction="#onSearch"/>
+        <Button text="Сбросить" styleClass="button-secondary" onAction="#onResetSearch"/>
+    </HBox>
+
+    <TableView fx:id="clientTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="nameColumn" text="Имя" prefWidth="180"/>
+            <TableColumn fx:id="phoneColumn" text="Телефон" prefWidth="150"/>
+            <TableColumn fx:id="roleColumn" text="Роль" prefWidth="100"/>
+            <TableColumn fx:id="masterColumn" text="Мастер?" prefWidth="90"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="messageLabel"/>
+
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Button text="Добавить" onAction="#onAdd"/>
+        <Button text="Изменить" onAction="#onEdit"/>
+        <Button text="Удалить" styleClass="button-danger" onAction="#onDelete"/>
+        <Button text="Сделать мастером" styleClass="button-secondary" onAction="#onPromote"/>
+        <Button text="Обновить" styleClass="button-secondary" onAction="#onRefresh"/>
+    </HBox>
+</VBox>
