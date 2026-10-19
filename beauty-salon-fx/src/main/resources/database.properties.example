@@ -1,3 +1,9 @@
 db.url=jdbc:postgresql://localhost:5432/beauty_salon
 db.user=postgres
 db.password=
+
+# Режим авторизации:
+#   jdbc - прямое обращение к PostgreSQL через JDBC (по умолчанию)
+#   rest - обращение к Spring Boot REST API
+auth.mode=rest
+backend.url=http://localhost:8080/api
