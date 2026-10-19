@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: beauty-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: beauty_salon
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./beauty-salon-fx/sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d beauty_salon"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - beauty-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: beauty-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beauty_salon
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      JWT_SECRET: supersecretkeybeauty-salon-must-be-at-least-256-bits-long-key-12345
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - beauty-network
+
+volumes:
+  postgres_data:
+
+networks:
+  beauty-network:
+    driver: bridge
