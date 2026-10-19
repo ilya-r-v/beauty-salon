@@ -105,6 +105,21 @@ public class ClientRepositoryJdbc implements ClientRepository {
         }
     }
 
+    @Override
+    public Optional<Client> findByPhone(String phone) {
+        String sql = "SELECT * FROM client WHERE phone = ?";
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, phone);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return Optional.of(mapRow(rs));
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при поиске клиента по телефону: " + e.getMessage(), e);
+        }
+    }
+
     private Client mapRow(ResultSet rs) throws SQLException {
         Client c = new Client();
         c.setId((UUID) rs.getObject("id"));

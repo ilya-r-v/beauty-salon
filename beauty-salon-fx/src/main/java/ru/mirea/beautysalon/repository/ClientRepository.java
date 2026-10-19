@@ -13,4 +13,5 @@ public interface ClientRepository {
     Client update(Client client);
     void deleteById(UUID id);
     boolean existsById(UUID id);
+    Optional<Client> findByPhone(String phone);
 }
