@@ -8,7 +8,12 @@
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ru.mirea.beautysalon.fx.controller.MainController">
     <top>
-        <Label text="Салон красоты — информационная система" styleClass="header-label" BorderPane.alignment="CENTER_LEFT"/>
+        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="top-bar">
+            <Label text="Салон красоты — информационная система" styleClass="header-label"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="userLabel" styleClass="user-label"/>
+            <Button text="Выйти" styleClass="button-secondary" onAction="#onLogout"/>
+        </HBox>
     </top>
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE">

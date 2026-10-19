@@ -14,11 +14,15 @@ import ru.mirea.beautysalon.exception.BusinessException;
 import ru.mirea.beautysalon.fx.ServiceRegistry;
 import ru.mirea.beautysalon.model.Client;
 import ru.mirea.beautysalon.model.Role;
+import ru.mirea.beautysalon.util.PasswordHasher;
 
 import java.io.IOException;
 import java.util.Optional;
 
 public class ClientDialogController {
+
+    // Стартовый пароль для клиентов, которых заводит оператор салона
+    public static final String DEFAULT_PASSWORD = "changeme";
 
     @FXML private TextField nameField;
     @FXML private TextField phoneField;
@@ -62,7 +66,7 @@ public class ClientDialogController {
                     .findFirst().ifPresent(roleCombo::setValue);
         } else {
             this.editingClient = new Client();
-            this.editingClient.setPasswordHash("changeme");
+            this.editingClient.setPasswordHash(PasswordHasher.hash(DEFAULT_PASSWORD));
         }
     }
 

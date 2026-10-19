@@ -1,5 +1,5 @@
 .root {
-    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-family: "Helvetica Neue";
     -fx-font-size: 13px;
     -fx-background-color: #f4f1f6;
 }
@@ -102,4 +102,25 @@
     -fx-padding: 10;
     -fx-spacing: 8;
     -fx-background-color: #ece3f2;
+}
+
+/* Экраны входа и регистрации */
+.auth-box {
+    -fx-background-color: #f4f1f6;
+}
+
+.auth-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: #6b5a78;
+    -fx-padding: 0 0 6 0;
+}
+
+/* Верхняя панель главного окна: заголовок, пользователь, выход */
+.top-bar {
+    -fx-padding: 0 15 0 0;
+}
+
+.user-label {
+    -fx-text-fill: #3b2250;
+    -fx-font-weight: bold;
 }
