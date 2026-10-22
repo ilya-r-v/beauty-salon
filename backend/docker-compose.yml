@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: beauty-salon-db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    
+    ports:
+      - "${DB_PORT}:5432"
+    
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d beauty_salon"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    image: migrate/migrate:v4.18.1
+    profiles: ["tools"]
+    volumes:
+      - ./migrations:/migrations
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint:
+      - migrate
+      - -path=/migrations
+      - -database=postgres://${DB_USER:-postgres}:${DB_PASSWORD:-secretpassword}@postgres:5432/${DB_NAME:-beauty_salon}?sslmode=disable
+
+volumes:
+  postgres_data:

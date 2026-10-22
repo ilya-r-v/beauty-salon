@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS master_profile;
+DROP TABLE IF EXISTS client;
