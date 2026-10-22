@@ -2,8 +2,8 @@ CREATE TABLE time_slot (
     id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     master_id  UUID NOT NULL
         REFERENCES master_profile(client_id) ON DELETE CASCADE,
-    start_time TIMESTAMP NOT NULL,
-    end_time   TIMESTAMP NOT NULL,
+    start_time TIMESTAMPTZ NOT NULL,
+    end_time   TIMESTAMPTZ NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CONSTRAINT chk_time_slot_range
