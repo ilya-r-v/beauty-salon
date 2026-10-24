@@ -34,5 +34,20 @@ services:
       - -path=/migrations
       - -database=postgres://${DB_USER:-postgres}:${DB_PASSWORD:-secretpassword}@postgres:5432/${DB_NAME:-beauty_salon}?sslmode=disable
 
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: beauty-salon-backend
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_USER: ${DB_USER}
+      DB_PASSWORD:  ${DB_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
 volumes:
   postgres_data:

@@ -11,3 +11,15 @@ migrate-version:
 
 migrate-create:
 	docker compose run --rm --entrypoint migrate migrate -path=/migrations -database="" create -ext sql -dir /migrations $(name)
+
+up:
+	docker compose up --build -d
+
+db:
+	docker compose up -d postgres
+
+logs:
+	docker compose logs -f backend
+
+down:
+	docker compose down
