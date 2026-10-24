@@ -1,6 +1,7 @@
 package ru.mirea.beautysalon.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,6 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
 
     @Query("SELECT COALESCE(SUM(b.serviceVariant.price), 0) FROM Booking b WHERE b.status = :status")
     BigDecimal sumPriceByStatus(@Param("status") BookingStatus status);
+
+    boolean existsByClientIdAndStatusIn(UUID clientId, List<BookingStatus> statuses);
 }
