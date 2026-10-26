@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.master.MasterResponse;
 import ru.mirea.beautysalon.service.MasterService;
+import ru.mirea.beautysalon.dto.master.TimeSlotResponse;
 
 @Tag(name = "Мастера", description = "Просмотр профилей мастеров салона")
 @RestController

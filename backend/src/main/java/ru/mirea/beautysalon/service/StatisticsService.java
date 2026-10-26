@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.statistics.StatisticsResponse;
 import ru.mirea.beautysalon.entity.BookingStatus;
+import ru.mirea.beautysalon.entity.Role;
 import ru.mirea.beautysalon.repository.BookingRepository;
 import ru.mirea.beautysalon.repository.ClientRepository;
 import ru.mirea.beautysalon.repository.MasterRepository;
@@ -26,7 +27,7 @@ public class StatisticsService {
     @Transactional(readOnly = true)
     public StatisticsResponse getStatistics() {
 
-        long totalClients = clientRepository.countByRole("CLIENT");
+        long totalClients = clientRepository.countByRole(Role.CLIENT);
         long totalMasters = masterRepository.count();
         long totalBookings = bookingRepository.count();
 
