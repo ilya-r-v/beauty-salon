@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.mirea.beautysalon.fx.controller.StatisticsTabController" spacing="16">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Label text="Статистика салона" styleClass="header-label" style="-fx-padding: 0;"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Обновить" styleClass="button-secondary" onAction="#onRefresh"/>
+    </HBox>
+
+    <GridPane hgap="16" vgap="16">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="33"/>
+            <ColumnConstraints percentWidth="33"/>
+            <ColumnConstraints percentWidth="33"/>
+        </columnConstraints>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="0" GridPane.columnIndex="0">
+            <Label text="Всего клиентов" styleClass="stat-title"/>
+            <Label fx:id="totalClientsLabel" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.rowIndex="0" GridPane.columnIndex="1">
+            <Label text="Всего мастеров" styleClass="stat-title"/>
+            <Label fx:id="totalMastersLabel" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.rowIndex="0" GridPane.columnIndex="2">
+            <Label text="Всего записей" styleClass="stat-title"/>
+            <Label fx:id="totalBookingsLabel" styleClass="stat-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <Label text="Ожидают (PENDING)" styleClass="stat-title"/>
+            <Label fx:id="pendingLabel" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.rowIndex="1" GridPane.columnIndex="1">
+            <Label text="Подтверждено (CONFIRMED)" styleClass="stat-title"/>
+            <Label fx:id="confirmedLabel" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.rowIndex="1" GridPane.columnIndex="2">
+            <Label text="Завершено (COMPLETED)" styleClass="stat-title"/>
+            <Label fx:id="completedLabel" styleClass="stat-value"/>
+        </VBox>
+
+        <VBox styleClass="stat-card" GridPane.rowIndex="2" GridPane.columnIndex="0">
+            <Label text="Отменено (CANCELLED)" styleClass="stat-title"/>
+            <Label fx:id="cancelledLabel" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.rowIndex="2" GridPane.columnIndex="1">
+            <Label text="Выручка по завершённым" styleClass="stat-title"/>
+            <Label fx:id="revenueLabel" styleClass="stat-value"/>
+        </VBox>
+        <VBox styleClass="stat-card" GridPane.rowIndex="2" GridPane.columnIndex="2">
+            <Label text="Средний чек" styleClass="stat-title"/>
+            <Label fx:id="averageCheckLabel" styleClass="stat-value"/>
+        </VBox>
+    </GridPane>
+</VBox>

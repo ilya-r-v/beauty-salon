@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Главное окно. Корень — BorderPane, в центре вкладки.
+     Шапка показывает имя вошедшего пользователя. -->
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.mirea.beautysalon.fx.controller.MainController">
+    <top>
+        <HBox styleClass="header-bar" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="8" bottom="8" left="16" right="16"/></padding>
+            <Label text="✂ Салон красоты" styleClass="header-label"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label fx:id="userLabel" styleClass="user-label"/>
+        </HBox>
+    </top>
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Записи на услугу">
+                    <content><fx:include source="bookings-tab.fxml"/></content>
+                </Tab>
+                <Tab text="Клиенты и мастера">
+                    <content><fx:include source="clients-tab.fxml"/></content>
+                </Tab>
+                <Tab text="Услуги">
+                    <content><fx:include source="services-tab.fxml"/></content>
+                </Tab>
+                <Tab text="Статистика">
+                    <content><fx:include source="statistics-tab.fxml"/></content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>

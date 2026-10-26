@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.mirea.beautysalon.fx.controller.ServiceDialogController" spacing="10" prefWidth="340">
+    <padding>
+        <Insets top="16" right="16" bottom="16" left="16"/>
+    </padding>
+
+    <Label text="Название услуги:"/>
+    <TextField fx:id="titleField"/>
+
+    <Label text="Мастер:"/>
+    <ComboBox fx:id="masterCombo" maxWidth="Infinity"/>
+
+    <Label text="Тип услуги:"/>
+    <ComboBox fx:id="typeCombo" maxWidth="Infinity"/>
+
+    <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Отмена" styleClass="button-secondary" onAction="#onCancel"/>
+        <Button text="Сохранить" onAction="#onSave"/>
+    </HBox>
+</VBox>

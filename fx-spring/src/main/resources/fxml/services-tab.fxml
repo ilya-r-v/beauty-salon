@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ru.mirea.beautysalon.fx.controller.ServicesTabController" spacing="8">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar-box">
+        <Label text="Фильтр по мастеру:"/>
+        <ComboBox fx:id="masterFilterCombo" prefWidth="160"/>
+        <Label text="Фильтр по типу:"/>
+        <ComboBox fx:id="typeFilterCombo" prefWidth="160"/>
+        <Button text="Применить" onAction="#onApplyFilter"/>
+        <Button text="Сбросить" styleClass="button-secondary" onAction="#onResetFilter"/>
+    </HBox>
+
+    <Label text="Услуги мастеров" styleClass="header-label" style="-fx-font-size: 15px; -fx-padding: 4 0 0 4;"/>
+    <TableView fx:id="serviceTable" prefHeight="180">
+        <columns>
+            <TableColumn fx:id="serviceTitleColumn" text="Название" prefWidth="220"/>
+            <TableColumn fx:id="serviceMasterColumn" text="Мастер" prefWidth="160"/>
+            <TableColumn fx:id="serviceTypeColumn" text="Тип" prefWidth="160"/>
+        </columns>
+    </TableView>
+    <HBox spacing="8">
+        <Button text="Новый тип услуги" styleClass="button-secondary" onAction="#onAddType"/>
+        <Button text="Новая услуга" onAction="#onAddService"/>
+        <Button text="Удалить услугу" styleClass="button-danger" onAction="#onDeleteService"/>
+    </HBox>
+
+    <Separator/>
+
+    <Label text="Варианты услуг (с ценой)" styleClass="header-label" style="-fx-font-size: 15px; -fx-padding: 4 0 0 4;"/>
+    <TableView fx:id="variantTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="variantTitleColumn" text="Название" prefWidth="200"/>
+            <TableColumn fx:id="variantServiceColumn" text="Услуга" prefWidth="200"/>
+            <TableColumn fx:id="variantPriceColumn" text="Цена" prefWidth="100"/>
+        </columns>
+    </TableView>
+    <HBox spacing="8">
+        <Button text="Новый вариант" onAction="#onAddVariant"/>
+        <Button text="Удалить вариант" styleClass="button-danger" onAction="#onDeleteVariant"/>
+        <Button text="Обновить всё" styleClass="button-secondary" onAction="#onRefresh"/>
+    </HBox>
+
+    <Label fx:id="messageLabel"/>
+</VBox>
