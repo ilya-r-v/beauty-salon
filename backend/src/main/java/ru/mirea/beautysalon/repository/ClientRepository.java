@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import ru.mirea.beautysalon.entity.Client;
+import ru.mirea.beautysalon.entity.Role;
 
 public interface ClientRepository extends JpaRepository<Client, UUID> {
     Optional<Client> findByPhone(String phone);
@@ -19,5 +20,5 @@ public interface ClientRepository extends JpaRepository<Client, UUID> {
 
     List<Client> findByPhoneContaining(String phone);
 
-    long countByRole(String role);
+    long countByRole(Role role);
 }

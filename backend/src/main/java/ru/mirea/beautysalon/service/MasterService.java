@@ -6,6 +6,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
+import ru.mirea.beautysalon.dto.master.TimeSlotResponse;
+import ru.mirea.beautysalon.entity.BookingStatus;
+import ru.mirea.beautysalon.repository.TimeSlotRepository;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.master.MasterResponse;
 import ru.mirea.beautysalon.entity.Master;
@@ -17,6 +21,7 @@ import ru.mirea.beautysalon.repository.MasterRepository;
 public class MasterService {
 
     private final MasterRepository masterRepository;
+    private final TimeSlotRepository timeSlotRepository;
 
     @Transactional(readOnly = true)
     public List<MasterResponse> getAllMasters() {
