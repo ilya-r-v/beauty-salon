@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ru.mirea.beautysalon.fx.controller.LoginController"
+      spacing="0" styleClass="login-root">
+
+    <!-- Шапка -->
+    <VBox styleClass="login-header" alignment="CENTER" spacing="6">
+        <padding><Insets top="32" bottom="24" left="24" right="24"/></padding>
+        <Text text="✂ Салон красоты" styleClass="login-title"/>
+        <Text text="Добро пожаловать" styleClass="login-subtitle"/>
+    </VBox>
+
+    <!-- Вкладки Вход / Регистрация -->
+    <TabPane fx:id="tabPane" styleClass="login-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+
+        <Tab text="Вход">
+            <VBox spacing="16" styleClass="login-form">
+                <padding><Insets top="24" bottom="24" left="32" right="32"/></padding>
+
+                <Label text="Телефон" styleClass="field-label"/>
+                <TextField fx:id="loginPhoneField" promptText="+7XXXXXXXXXX"/>
+
+                <Label text="Пароль" styleClass="field-label"/>
+                <PasswordField fx:id="loginPasswordField" promptText="Введите пароль"/>
+
+                <Label fx:id="loginErrorLabel" styleClass="error-label" wrapText="true"/>
+
+                <Button text="Войти" onAction="#onLogin" styleClass="primary-button" maxWidth="Infinity"/>
+            </VBox>
+        </Tab>
+
+        <Tab text="Регистрация">
+            <VBox spacing="16" styleClass="login-form">
+                <padding><Insets top="24" bottom="24" left="32" right="32"/></padding>
+
+                <Label text="Имя" styleClass="field-label"/>
+                <TextField fx:id="regNameField" promptText="Ваше имя"/>
+
+                <Label text="Телефон" styleClass="field-label"/>
+                <TextField fx:id="regPhoneField" promptText="+7XXXXXXXXXX"/>
+
+                <Label text="Пароль" styleClass="field-label"/>
+                <PasswordField fx:id="regPasswordField" promptText="Минимум 6 символов"/>
+
+                <Label fx:id="regErrorLabel" styleClass="error-label" wrapText="true"/>
+
+                <Button text="Зарегистрироваться" onAction="#onRegister" styleClass="primary-button" maxWidth="Infinity"/>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox>
