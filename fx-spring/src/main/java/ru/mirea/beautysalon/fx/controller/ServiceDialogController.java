@@ -17,7 +17,6 @@ import ru.mirea.beautysalon.fx.ApiRegistry;
 import java.io.IOException;
 import java.util.Optional;
 
-// Диалог создания услуги.
 public class ServiceDialogController {
 
     @FXML private TextField titleField;

@@ -8,14 +8,12 @@
       fx:controller="ru.mirea.beautysalon.fx.controller.LoginController"
       spacing="0" styleClass="login-root">
 
-    <!-- Шапка -->
     <VBox styleClass="login-header" alignment="CENTER" spacing="6">
         <padding><Insets top="32" bottom="24" left="24" right="24"/></padding>
         <Text text="✂ Салон красоты" styleClass="login-title"/>
         <Text text="Добро пожаловать" styleClass="login-subtitle"/>
     </VBox>
 
-    <!-- Вкладки Вход / Регистрация -->
     <TabPane fx:id="tabPane" styleClass="login-tabs" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
 
         <Tab text="Вход">

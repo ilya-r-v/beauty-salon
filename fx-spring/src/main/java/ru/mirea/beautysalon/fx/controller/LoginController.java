@@ -11,8 +11,6 @@ import ru.mirea.beautysalon.fx.BeautySalonFxApplication;
 
 import java.io.IOException;
 
-// Экран входа/регистрации.
-// После успешного входа AppState сохраняет токен, открывается главное окно.
 public class LoginController {
 
     @FXML private TabPane tabPane;

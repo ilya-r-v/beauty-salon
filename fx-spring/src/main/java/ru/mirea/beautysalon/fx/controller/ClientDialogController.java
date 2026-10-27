@@ -15,7 +15,6 @@ import ru.mirea.beautysalon.fx.ApiRegistry;
 import java.io.IOException;
 import java.util.Optional;
 
-// Диалог создания/редактирования клиента.
 public class ClientDialogController {
 
     @FXML private TextField nameField;
@@ -28,7 +27,6 @@ public class ClientDialogController {
     private boolean saved = false;
     private ClientResponse result;
 
-    // existing == null → создание нового, иначе — редактирование
     public static Optional<ClientResponse> open(Window owner, ClientResponse existing) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -75,7 +73,6 @@ public class ClientDialogController {
 
         try {
             if (editingClient == null) {
-                // Создание — нужен пароль
                 String password = passwordField.getText();
                 if (password.isEmpty()) {
                     errorLabel.setText("Введите пароль.");
@@ -83,7 +80,6 @@ public class ClientDialogController {
                 }
                 result = ApiRegistry.api().createClient(name, phone, password);
             } else {
-                // Редактирование — обновляем имя и телефон
                 result = ApiRegistry.api().updateClient(editingClient.id(), name, phone);
             }
             saved = true;

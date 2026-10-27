@@ -6,8 +6,6 @@ import ru.mirea.beautysalon.client.ApiException;
 import ru.mirea.beautysalon.client.dto.StatisticsResponse;
 import ru.mirea.beautysalon.fx.ApiRegistry;
 
-// Вкладка «Статистика».
-// Один запрос GET /api/statistics возвращает все 7 показателей — никакой логики здесь.
 public class StatisticsTabController {
 
     @FXML private Label totalClientsLabel;

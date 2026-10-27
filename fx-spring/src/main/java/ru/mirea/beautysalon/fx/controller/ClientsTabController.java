@@ -12,8 +12,6 @@ import ru.mirea.beautysalon.fx.ApiRegistry;
 import java.util.List;
 import java.util.Optional;
 
-// Вкладка «Клиенты и мастера».
-// isMaster берётся напрямую из ClientResponse — нет лишних запросов.
 public class ClientsTabController {
 
     @FXML private ChoiceBox<String> searchTypeChoice;

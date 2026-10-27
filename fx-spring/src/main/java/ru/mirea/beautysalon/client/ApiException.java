@@ -1,7 +1,5 @@
 package ru.mirea.beautysalon.client;
 
-// Бросается ApiClient-ом при HTTP-ошибках (4xx, 5xx).
-// Контроллеры ловят и показывают e.getMessage() пользователю.
 public class ApiException extends RuntimeException {
 
     private final int statusCode;

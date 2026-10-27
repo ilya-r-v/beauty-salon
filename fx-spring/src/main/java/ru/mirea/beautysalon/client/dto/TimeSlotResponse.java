@@ -3,7 +3,6 @@ package ru.mirea.beautysalon.client.dto;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-// Ответ /api/time-slots (свободные слоты мастера)
 public record TimeSlotResponse(
                 UUID id,
                 UUID masterId,

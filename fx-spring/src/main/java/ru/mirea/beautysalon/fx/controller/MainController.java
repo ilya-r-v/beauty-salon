@@ -4,8 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import ru.mirea.beautysalon.fx.AppState;
 
-// Главное окно — просто TabPane.
-// Показывает имя вошедшего пользователя в статусной строке.
 public class MainController {
 
     @FXML private Label userLabel;

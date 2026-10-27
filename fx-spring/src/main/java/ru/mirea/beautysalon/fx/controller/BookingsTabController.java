@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-// Вкладка «Записи на услугу» — основная сущность.
-// Все данные получает через ApiRegistry.api(), фильтры и поиск передаются прямо в запрос.
 public class BookingsTabController {
 
     @FXML private ChoiceBox<String> searchTypeChoice;
@@ -72,7 +70,6 @@ public class BookingsTabController {
 
     private void reloadMasterFilter() {
         masterFilterCombo.getItems().clear();
-        // null-мастер = "Все"
         masterFilterCombo.getItems().add(null);
         try {
             masterFilterCombo.getItems().addAll(ApiRegistry.api().getMasters());
@@ -80,7 +77,6 @@ public class BookingsTabController {
             showMessage("Не удалось загрузить мастеров: " + e.getMessage());
         }
         masterFilterCombo.setValue(null);
-        // Отображаем "Все" для null и имя для мастера
         masterFilterCombo.setButtonCell(masterCell());
         masterFilterCombo.setCellFactory(lv -> masterCell());
     }
@@ -109,8 +105,6 @@ public class BookingsTabController {
         showMessage(rows.isEmpty() ? "Ничего не найдено." : rows.size() + " запис(ей).");
     }
 
-    // ─── Поиск ────────────────────────────────────────────────────────────────
-
     @FXML
     private void onSearch() {
         String text = searchField.getText() == null ? "" : searchField.getText().trim();
@@ -131,8 +125,6 @@ public class BookingsTabController {
         searchField.clear();
         loadAll();
     }
-
-    // ─── Фильтры ──────────────────────────────────────────────────────────────
 
     @FXML
     private void onApplyFilter() {
@@ -163,8 +155,6 @@ public class BookingsTabController {
         loadAll();
     }
 
-    // ─── Сортировка ───────────────────────────────────────────────────────────
-
     @FXML
     private void onSortByTime() {
         try {
@@ -182,8 +172,6 @@ public class BookingsTabController {
             showMessage("Ошибка сортировки: " + e.getMessage());
         }
     }
-
-    // ─── CRUD ─────────────────────────────────────────────────────────────────
 
     @FXML
     private void onAdd() {
@@ -242,8 +230,6 @@ public class BookingsTabController {
         reloadMasterFilter();
         loadAll();
     }
-
-    // ─── Экспорт ──────────────────────────────────────────────────────────────
 
     @FXML
     private void onExport() {

@@ -21,16 +21,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
-// Единственное место, где живёт HTTP-код.
-// Каждый публичный метод — один вызов REST-эндпоинта Spring Backend.
-// Ошибки API (4xx/5xx) выбрасываются как ApiException с понятным сообщением.
 public class ApiClient {
 
     private final String baseUrl;
     private final HttpClient http;
     private final ObjectMapper json;
 
-    // Токен авторизации — устанавливается после логина/регистрации
     private String token;
 
     public ApiClient() {
@@ -60,8 +56,6 @@ public class ApiClient {
         return token != null && !token.isBlank();
     }
 
-    // ─── Auth ─────────────────────────────────────────────────────────────────
-
     public AuthResponse register(String name, String phone, String password) {
         String body = json("""
                 {"name":"%s","phone":"%s","password":"%s","passwordConfirm":"%s"}
@@ -75,8 +69,6 @@ public class ApiClient {
                 """.formatted(phone, password).trim());
         return post("/api/auth/login", body, AuthResponse.class);
     }
-
-    // ─── Clients ──────────────────────────────────────────────────────────────
 
     public List<ClientResponse> getClients() {
         return getList("/api/clients", new TypeReference<>() {});
@@ -113,15 +105,10 @@ public class ApiClient {
         post("/api/clients/" + clientId + "/promote", body, Object.class);
     }
 
-    // ─── Masters ──────────────────────────────────────────────────────────────
-
     public List<MasterResponse> getMasters() {
         return getList("/api/masters", new TypeReference<>() {});
     }
 
-    // ─── Time Slots ───────────────────────────────────────────────────────────
-
-    // Возвращает свободные (не занятые) слоты — backend отдаёт только не привязанные к брони
     public List<TimeSlotResponse> getFreeSlots() {
         return getList("/api/time-slots", new TypeReference<>() {});
     }
@@ -129,8 +116,6 @@ public class ApiClient {
     public List<TimeSlotResponse> getSlotsByMaster(UUID masterId) {
         return getList("/api/time-slots?masterId=" + masterId, new TypeReference<>() {});
     }
-
-    // ─── Bookings ─────────────────────────────────────────────────────────────
 
     public List<BookingResponse> getBookings() {
         return getList("/api/bookings", new TypeReference<>() {});
@@ -173,8 +158,6 @@ public class ApiClient {
         delete("/api/bookings/" + id);
     }
 
-    // ─── Service Types ────────────────────────────────────────────────────────
-
     public List<ServiceTypeResponse> getServiceTypes() {
         return getList("/api/service-types", new TypeReference<>() {});
     }
@@ -185,8 +168,6 @@ public class ApiClient {
                 """.formatted(name).trim());
         return post("/api/service-types", body, ServiceTypeResponse.class);
     }
-
-    // ─── Services ─────────────────────────────────────────────────────────────
 
     public List<ServiceResponse> getServices() {
         return getList("/api/services", new TypeReference<>() {});
@@ -209,8 +190,6 @@ public class ApiClient {
     public void deleteService(UUID id) {
         delete("/api/services/" + id);
     }
-
-    // ─── Service Variants ─────────────────────────────────────────────────────
 
     public List<VariantResponse> getVariants() {
         return getList("/api/service-variants", new TypeReference<>() {});
@@ -236,13 +215,9 @@ public class ApiClient {
         delete("/api/service-variants/" + id);
     }
 
-    // ─── Statistics ───────────────────────────────────────────────────────────
-
     public StatisticsResponse getStatistics() {
         return get("/api/statistics", StatisticsResponse.class);
     }
-
-    // ─── HTTP helpers ─────────────────────────────────────────────────────────
 
     private <T> T get(String path, Class<T> type) {
         HttpRequest req = requestBuilder(path).GET().build();
@@ -316,12 +291,10 @@ public class ApiClient {
         }
     }
 
-    // Преобразует HTTP-ошибки в ApiException с читаемым сообщением
     private void checkStatus(HttpResponse<String> resp) {
         int code = resp.statusCode();
         if (code >= 200 && code < 300) return;
 
-        // Пытаемся вытащить message из JSON-ответа
         String message = extractMessage(resp.body(), code);
         throw new ApiException(code, message);
     }
@@ -333,7 +306,6 @@ public class ApiClient {
                 if (node.has("message")) return node.get("message").asText();
                 if (node.has("error")) return node.get("error").asText();
             } catch (Exception ignored) {}
-            // Тело не JSON — вернём как есть, если короткое
             if (body.length() < 200) return body;
         }
         return switch (code) {

@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-// Экспорт записей в Excel.
-// Работает с готовыми BookingRow — всё нужное уже в них, JDBC не нужен.
 public class ExcelExporter {
 
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -21,7 +19,6 @@ public class ExcelExporter {
         try (Workbook wb = new XSSFWorkbook(); FileOutputStream out = new FileOutputStream(filePath)) {
             Sheet sheet = wb.createSheet("Записи");
 
-            // Заголовок
             Row header = sheet.createRow(0);
             CellStyle headerStyle = boldStyle(wb);
             String[] columns = {"Клиент", "Мастер", "Услуга", "Цена (руб.)", "Статус", "Время начала"};
@@ -31,7 +28,6 @@ public class ExcelExporter {
                 cell.setCellStyle(headerStyle);
             }
 
-            // Данные
             int rowNum = 1;
             for (BookingRow r : rows) {
                 Row row = sheet.createRow(rowNum++);
@@ -44,7 +40,6 @@ public class ExcelExporter {
                 row.createCell(5).setCellValue(time);
             }
 
-            // Автоширина колонок
             for (int i = 0; i < columns.length; i++) {
                 sheet.autoSizeColumn(i);
             }

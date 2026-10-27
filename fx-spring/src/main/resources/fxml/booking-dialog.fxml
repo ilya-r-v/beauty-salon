@@ -4,9 +4,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!-- Диалог создания записи на услугу.
-     В Spring backend booking = clientId + slotId + serviceVariantId.
-     Мастер и время уже внутри TimeSlot, отдельно не выбираются. -->
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="ru.mirea.beautysalon.fx.controller.BookingDialogController"
       spacing="14" prefWidth="420">

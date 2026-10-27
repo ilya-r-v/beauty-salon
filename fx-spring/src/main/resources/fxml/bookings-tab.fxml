@@ -8,7 +8,6 @@
       fx:controller="ru.mirea.beautysalon.fx.controller.BookingsTabController" spacing="8">
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
-    <!-- Поиск -->
     <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar-box">
         <Label text="Поиск:"/>
         <ChoiceBox fx:id="searchTypeChoice"/>
@@ -17,7 +16,6 @@
         <Button text="Сбросить" styleClass="button-secondary" onAction="#onResetSearch"/>
     </HBox>
 
-    <!-- Фильтрация и сортировка -->
     <HBox spacing="8" alignment="CENTER_LEFT" styleClass="toolbar-box">
         <Label text="Статус:"/>
         <ComboBox fx:id="statusFilterCombo" prefWidth="140"/>
@@ -37,7 +35,6 @@
         <Button text="По статусу" styleClass="button-secondary" onAction="#onSortByStatus"/>
     </HBox>
 
-    <!-- Таблица -->
     <TableView fx:id="bookingTable" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="clientColumn" text="Клиент" prefWidth="150"/>
@@ -51,7 +48,6 @@
 
     <Label fx:id="messageLabel"/>
 
-    <!-- Действия. Изменить заменено на "Изменить статус" т.к. в Spring редактирование через статус -->
     <HBox spacing="8" alignment="CENTER_LEFT">
         <Button text="Добавить" onAction="#onAdd"/>
         <Button text="Изменить статус" styleClass="button-secondary" onAction="#onChangeStatus"/>

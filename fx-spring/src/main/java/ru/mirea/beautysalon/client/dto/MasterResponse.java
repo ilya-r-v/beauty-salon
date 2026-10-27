@@ -2,7 +2,6 @@ package ru.mirea.beautysalon.client.dto;
 
 import java.util.UUID;
 
-// Ответ /api/masters и /api/masters/{clientId}
 public record MasterResponse(
         UUID clientId,
         String name,

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-// Диалог создания варианта услуги.
 public class VariantDialogController {
 
     @FXML private TextField titleField;

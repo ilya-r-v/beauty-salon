@@ -20,9 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-// Диалог создания записи на услугу.
-// В Spring backend booking создаётся через: clientId + slotId + serviceVariantId.
-// TimeSlot = конкретный свободный слот мастера (мастер и время уже внутри слота).
 public class BookingDialogController {
 
     @FXML private ComboBox<ClientResponse> clientCombo;
@@ -37,7 +34,6 @@ public class BookingDialogController {
 
     @FXML
     private void initialize() {
-        // Загружаем клиентов
         try {
             clientCombo.getItems().addAll(ApiRegistry.api().getClients());
         } catch (ApiException e) {
@@ -46,7 +42,6 @@ public class BookingDialogController {
         clientCombo.setButtonCell(clientCell());
         clientCombo.setCellFactory(lv -> clientCell());
 
-        // Загружаем свободные слоты
         try {
             slotCombo.getItems().addAll(ApiRegistry.api().getFreeSlots());
         } catch (ApiException e) {
@@ -55,7 +50,6 @@ public class BookingDialogController {
         slotCombo.setButtonCell(slotCell());
         slotCombo.setCellFactory(lv -> slotCell());
 
-        // Загружаем варианты услуг
         try {
             variantCombo.getItems().addAll(ApiRegistry.api().getVariants());
         } catch (ApiException e) {
@@ -65,7 +59,6 @@ public class BookingDialogController {
         variantCombo.setCellFactory(lv -> variantCell());
     }
 
-    // Открывает диалог. existing == null → только создание (редактирование статуса — через кнопку в таблице).
     public static Optional<BookingResponse> open(Window owner, BookingResponse existing) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -113,8 +106,6 @@ public class BookingDialogController {
         saved = false;
         ((Stage) errorLabel.getScene().getWindow()).close();
     }
-
-    // ─── Ячейки ComboBox ──────────────────────────────────────────────────────
 
     private ListCell<ClientResponse> clientCell() {
         return new ListCell<>() {

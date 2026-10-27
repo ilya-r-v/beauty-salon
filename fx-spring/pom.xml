@@ -18,7 +18,6 @@
     </properties>
 
     <dependencies>
-        <!-- JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -30,7 +29,6 @@
             <version>${javafx.version}</version>
         </dependency>
 
-        <!-- JSON (десериализация ответов REST API) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -42,7 +40,6 @@
             <version>${jackson.version}</version>
         </dependency>
 
-        <!-- Экспорт записей в Excel (.xlsx) -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>

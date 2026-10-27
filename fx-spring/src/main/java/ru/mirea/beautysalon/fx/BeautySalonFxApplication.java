@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-// Точка входа. Показывает экран логина, после успешного входа — главное окно.
 public class BeautySalonFxApplication extends Application {
 
     @Override

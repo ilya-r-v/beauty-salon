@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-// Вкладка «Услуги» — типы, услуги и варианты.
-// ServiceResponse уже содержит masterName и serviceTypeName, лишних запросов нет.
 public class ServicesTabController {
 
     @FXML private ComboBox<MasterResponse> masterFilterCombo;
@@ -41,13 +39,11 @@ public class ServicesTabController {
 
     @FXML
     private void initialize() {
-        // Услуги — имена уже в ServiceResponse
         serviceTitleColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().title()));
         serviceMasterColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().masterName()));
         serviceTypeColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().serviceTypeName()));
         serviceTable.setItems(serviceRows);
 
-        // Варианты — serviceTitle уже в VariantResponse
         variantTitleColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().title()));
         variantServiceColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().serviceTitle()));
         variantPriceColumn.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().price() + " руб."));

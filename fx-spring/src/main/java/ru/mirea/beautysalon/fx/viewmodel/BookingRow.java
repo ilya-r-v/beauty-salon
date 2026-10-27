@@ -6,9 +6,6 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-// Строка таблицы записей — оборачивает BookingResponse.
-// BookingResponse уже содержит все имена (clientName, masterName, serviceVariantTitle),
-// поэтому не нужно делать дополнительных запросов при отображении.
 public class BookingRow {
 
     private final BookingResponse booking;
