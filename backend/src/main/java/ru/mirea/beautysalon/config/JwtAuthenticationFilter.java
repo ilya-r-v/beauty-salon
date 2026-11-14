@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UUID userId = tokenProvider.getUserIdFromToken(token);
 
             Client client = clientRepository.findById(userId).orElse(null);
-            if (client != null) {
+            if (client != null && client.isActive()) {
                 var auth = new UsernamePasswordAuthenticationToken(
                         client.getId(),
                         null,

@@ -30,7 +30,21 @@ import ru.mirea.beautysalon.service.AuthService;
 public class AuthController {
 
     private final AuthService authService;
+    private final ru.mirea.beautysalon.service.RefreshSessionService sessions;
+    public record TokenRequest(@jakarta.validation.constraints.NotBlank String refreshToken) {}
+    @PostMapping("/refresh")
+    public AuthResponse refresh(@Valid @RequestBody TokenRequest request) { return sessions.refresh(request.refreshToken()); }
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout(@Valid @RequestBody TokenRequest request) { sessions.logout(request.refreshToken()); }
 
+    public record PasswordRequest(@jakarta.validation.constraints.NotBlank String currentPassword, @jakarta.validation.constraints.NotBlank String newPassword) {}
+    @PostMapping("/change-password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void changePassword(Authentication authentication, @Valid @RequestBody PasswordRequest request) {
+        if (authentication == null) throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        authService.changePassword((UUID) authentication.getPrincipal(), request.currentPassword(), request.newPassword());
+    }
     @Operation(summary = "Регистрация нового клиента")
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)

@@ -28,9 +28,12 @@ public class AuthService {
     private final MasterRepository masterRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    private final RefreshSessionService sessions;
+    private final org.springframework.jdbc.core.JdbcTemplate jdbc;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
+        PasswordPolicy.validate(request.getPassword());
         if (!request.getPassword().equals(request.getPasswordConfirm())) {
             throw new BusinessException("Пароли не совпадают");
         }
@@ -52,6 +55,8 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
+                .refreshToken(sessions.issue(savedClient.getId()))
+                .passwordChangeRequired(savedClient.isPasswordChangeRequired())
                 .id(savedClient.getId())
                 .name(savedClient.getName())
                 .phone(savedClient.getPhone())
@@ -59,12 +64,12 @@ public class AuthService {
                 .build();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public AuthResponse login(LoginRequest request) {
         Client client = clientRepository.findByPhone(request.getPhone().trim())
                 .orElseThrow(() -> new BusinessException("Неверный номер телефона или пароль"));
 
-        if (!passwordEncoder.matches(request.getPassword(), client.getPasswordHash())) {
+        if (!client.isActive() || !passwordEncoder.matches(request.getPassword(), client.getPasswordHash())) {
             throw new BusinessException("Неверный номер телефона или пароль");
         }
 
@@ -72,6 +77,8 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
+                .refreshToken(sessions.issue(client.getId()))
+                .passwordChangeRequired(client.isPasswordChangeRequired())
                 .id(client.getId())
                 .name(client.getName())
                 .phone(client.getPhone())
@@ -79,6 +86,15 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
+    public void changePassword(UUID id, String current, String next) {
+        var client = clientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
+        if (!passwordEncoder.matches(current, client.getPasswordHash())) throw new BusinessException("Текущий пароль неверен");
+        PasswordPolicy.validate(next);
+        client.setPasswordHash(passwordEncoder.encode(next));
+        client.setPasswordChangeRequired(false);
+        jdbc.update("DELETE FROM refresh_session WHERE client_id=?", id);
+    }
     @Transactional(readOnly = true)
     public MeResponse getMe(UUID currentUserId) {
         Client client = clientRepository.findById(currentUserId)

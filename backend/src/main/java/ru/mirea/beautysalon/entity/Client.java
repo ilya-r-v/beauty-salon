@@ -53,6 +53,10 @@ public class Client {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
+    @Builder.Default
+    private boolean active = true;
+    private boolean passwordChangeRequired;
+
     @PrePersist
     protected void onCreate() {
         OffsetDateTime now = OffsetDateTime.now();

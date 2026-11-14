@@ -29,7 +29,7 @@ server:
 app:
   jwt:
     secret: "dab6650d-d423-42d6-81b1-8508fd650af2"
-    expiration-ms: 86400000
+    expiration-ms: 900000
 management:
   endpoints:
     web:
