@@ -32,9 +32,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
+                .exceptionHandling(errors -> errors
+                    .authenticationEntryPoint((req, res, ex) -> { res.setStatus(401); res.setContentType("application/json"); res.getWriter().write("{\"status\":401,\"message\":\"Authentication required\"}"); })
+                    .accessDeniedHandler((req, res, ex) -> { res.setStatus(403); res.setContentType("application/json"); res.getWriter().write("{\"status\":403,\"message\":\"Access denied\"}"); }))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers(SWAGGER_WHITELIST).hasRole("ADMIN")
                         .requestMatchers("/api/auth/**", "/error").permitAll()
                         .requestMatchers("/api/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
