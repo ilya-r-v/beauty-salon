@@ -11,5 +11,7 @@ import ru.mirea.beautysalon.entity.BookingStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StatusRequest {
+    @jakarta.validation.constraints.NotNull
+    private Long version;
     private BookingStatus status;
 }

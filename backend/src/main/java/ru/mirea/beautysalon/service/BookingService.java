@@ -99,6 +99,7 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Запись с ID " + id + " не найдена"));
 
+        if (!java.util.Objects.equals(booking.getVersion(), request.getVersion())) throw new ConflictException("Версия записи устарела" );
         BookingStatus current = booking.getStatus();
         BookingStatus target = request.getStatus();
 
@@ -121,9 +122,22 @@ public class BookingService {
             throw new ConflictException("Нельзя удалить завершенную запись");
         }
 
-        bookingRepository.delete(booking);
+        booking.setArchived(true);
+        bookingRepository.save(booking);
     }
 
+    @Transactional
+    public BookingResponse restore(UUID id) {
+        Booking booking = bookingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Запись не найдена"));
+        booking.setArchived(false);
+        return mapToResponse(bookingRepository.saveAndFlush(booking));
+    }
+    @Transactional
+    public void permanentDelete(UUID id) {
+        Booking booking = bookingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Запись не найдена"));
+        if (!booking.isArchived()) throw new ConflictException("Сначала архивируйте запись");
+        bookingRepository.delete(booking);
+    }
     private void validateStateTransition(BookingStatus current, BookingStatus target) {
         boolean isValid = switch (current) {
             case PENDING -> (target == BookingStatus.CONFIRMED || target == BookingStatus.CANCELLED);
@@ -143,6 +157,8 @@ public class BookingService {
 
         return BookingResponse.builder()
                 .id(booking.getId())
+                .archived(booking.isArchived())
+                .version(booking.getVersion())
                 .clientId(client.getId())
                 .clientName(client.getName())
                 .slot(BookingResponse.SlotDto.builder()

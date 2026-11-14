@@ -59,6 +59,10 @@ public class Booking {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
+    private boolean archived;
+    @jakarta.persistence.Version
+    private Long version;
+
     @PrePersist
     protected void onCreate() {
         OffsetDateTime now = OffsetDateTime.now();

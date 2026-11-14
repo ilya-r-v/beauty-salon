@@ -43,6 +43,11 @@ public class BookingController {
         return bookingService.getAllBookings(search, searchBy, status, masterId, dateFrom, dateTo, sortBy);
     }
 
+    @PostMapping("/{id}/restore")
+    public BookingResponse restore(@PathVariable UUID id) { return bookingService.restore(id); }
+    @DeleteMapping("/{id}/permanent")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void permanentDelete(@PathVariable UUID id) { bookingService.permanentDelete(id); }
     @GetMapping("/{id}")
     public BookingResponse getBookingById(@PathVariable UUID id) {
         return bookingService.getBookingById(id);
@@ -57,7 +62,7 @@ public class BookingController {
     @PatchMapping("/{id}/status")
     public BookingResponse updateStatus(
             @PathVariable UUID id,
-            @RequestBody StatusRequest request) {
+            @jakarta.validation.Valid @RequestBody StatusRequest request) {
         return bookingService.updateStatus(id, request);
     }
 

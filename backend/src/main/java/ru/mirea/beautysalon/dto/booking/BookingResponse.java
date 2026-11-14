@@ -18,6 +18,8 @@ import ru.mirea.beautysalon.entity.BookingStatus;
 @Builder
 public class BookingResponse {
     private UUID id;
+    private boolean archived;
+    private Long version;
     private UUID clientId;
     private String clientName;
     private SlotDto slot;
@@ -34,6 +36,8 @@ public class BookingResponse {
     @Builder
     public static class SlotDto {
         private UUID id;
+    private boolean archived;
+    private Long version;
         private UUID masterId;
         private String masterName;
         private OffsetDateTime startTime;
