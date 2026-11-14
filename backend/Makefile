@@ -1,25 +1,9 @@
-.PHONY: migrate-up migrate-down migrate-status migrate-create
-
-migrate-up:
-	docker compose run --rm migrate up
-
-migrate-down:
-	docker compose run --rm migrate down 1
-
-migrate-version:
-	docker compose run --rm migrate version
-
-migrate-create:
-	docker compose run --rm --entrypoint migrate migrate -path=/migrations -database="" create -ext sql -dir /migrations $(name)
-
+.PHONY: up db logs down
 up:
-	docker compose up --build -d
-
+	docker compose up --build -d --wait
 db:
-	docker compose up -d postgres
-
+	docker compose up -d --wait postgres
 logs:
 	docker compose logs -f backend
-
 down:
 	docker compose down

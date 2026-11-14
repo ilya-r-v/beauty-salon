@@ -1,103 +1,21 @@
-# Запуск проекта через Make
+# Beauty Salon Spring backend
 
-### Быстрый запуск в Docker (рекомендуемый)
+Java 21, Maven, PostgreSQL, Flyway. Из каталога backend:
 
-1. **Собрать и поднять весь проект:**
-```bash
+```sh
+cp .env.example .env
+# задайте DB_PASSWORD, при занятом 5432 задайте DB_PORT=55432
 make up
-
 ```
 
+Flyway автоматически применяет `src/main/resources/db/migration` перед Hibernate validate.
+Health: http://localhost:8080/actuator/health. Swagger: /swagger-ui.html (ADMIN).
+`make down` сохраняет данные PostgreSQL.
 
-*(Команда соберет образ бэкенда и запустит контейнеры в фоне)*
-2. **Применить миграции базы данных:**
-```bash
-make migrate-up
+Для существующей БД, ранее созданной Go migrate, сначала сделайте резервную копию,
+проверьте соответствие схемы миграциям V1–V6 и вручную выполните Flyway baseline
+с baselineVersion=6. Автоматический baseline намеренно отключён: он может скрыть
+несовпадение схемы. Старые SQL в migrations оставлены как история переноса.
 
-```
-
-
-3. **Смотреть логи бэкенда в реальном времени:**
-```bash
-make logs
-
-```
-
-
-4. **Остановить проект:**
-```bash
-make down
-
-```
-
-
-
----
-
-### Локальный запуск (для разработки)
-
-1. **Запустить только базу данных:**
-```bash
-make db
-
-```
-
-
-2. **Применить миграции:**
-```bash
-make migrate-up
-
-```
-
-
-3. **Запустить приложение Spring Boot:**
-```bash
-./mvnw spring-boot:run
-
-```
-
-
-*(на Windows: `mvnw.cmd spring-boot:run`)*
-
----
-
-### Дополнительные команды для миграций
-
-* **Откатить последнюю миграцию:**
-```bash
-make migrate-down
-
-```
-
-
-* **Проверить текущую версию схемы БД:**
-```bash
-make migrate-version
-
-```
-
-
-* **Создать новую миграцию:**
-```bash
-make migrate-create name=add_new_table
-
-```
-
-
-
----
-
-### Доступ к Swagger UI
-
-После запуска перейдите в браузере:
-
-* **Интерактивная документация:** [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-*(или прямой путь к SPA: `http://localhost:8080/swagger-ui/index.html`)*
-* **Спецификация OpenAPI (JSON):** [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
-
-> **Авторизация в Swagger:**
-> 1. Вызовите `POST /api/auth/register` или `POST /api/auth/login`.
-> 2. Скопируйте полученный `token` из ответа.
-> 3. Нажмите кнопку **Authorize 🔓** в правом верхнем углу интерфейса Swagger и вставьте токен (без префикса `Bearer`).
-> 
->
+Локально: Java 21, `bash mvnw test`, `bash mvnw spring-boot:run`.
+Настройки БД передаются переменными DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD.
