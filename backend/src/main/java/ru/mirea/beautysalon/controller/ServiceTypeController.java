@@ -29,6 +29,11 @@ public class ServiceTypeController {
         return serviceTypeService.getAllServiceTypes();
     }
 
+    @org.springframework.web.bind.annotation.PutMapping("/{id}")
+    public ServiceTypeResponse update(@org.springframework.web.bind.annotation.PathVariable java.util.UUID id, @Valid @RequestBody ServiceTypeRequest request) {
+        return serviceTypeService.update(id,request);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceTypeResponse createServiceType(@Valid @RequestBody ServiceTypeRequest request) {

@@ -30,13 +30,16 @@ import ru.mirea.beautysalon.service.AuthService;
 public class AuthController {
 
     private final AuthService authService;
-    private final ru.mirea.beautysalon.service.RefreshSessionService sessions;
+    private final ru.mirea.beautysalon.security.RefreshSessionService sessions;
     public record TokenRequest(@jakarta.validation.constraints.NotBlank String refreshToken) {}
     @PostMapping("/refresh")
     public AuthResponse refresh(@Valid @RequestBody TokenRequest request) { return sessions.refresh(request.refreshToken()); }
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void logout(@Valid @RequestBody TokenRequest request) { sessions.logout(request.refreshToken()); }
+    public void logout(@Valid @RequestBody TokenRequest request, jakarta.servlet.http.HttpServletResponse response) {
+        sessions.logout(request.refreshToken());
+        response.addHeader("Set-Cookie","salon_docs=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0");
+    }
 
     public record PasswordRequest(@jakarta.validation.constraints.NotBlank String currentPassword, @jakarta.validation.constraints.NotBlank String newPassword) {}
     @PostMapping("/change-password")
@@ -62,7 +65,7 @@ public class AuthController {
     @GetMapping("/me")
     public MeResponse getMe(Authentication authentication) {
         if (authentication == null || !(authentication.getPrincipal() instanceof UUID currentUserId)) {
-            throw new ForbiddenException("Пользователь не авторизован");
+            throw new org.springframework.web.server.ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         return authService.getMe(currentUserId);
     }

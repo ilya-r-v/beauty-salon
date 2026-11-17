@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.mirea.beautysalon.entity.BookingStatus;
+import ru.mirea.beautysalon.domain.BookingStatus;
 
 @Getter
 @Setter

@@ -1,5 +1,6 @@
-package ru.mirea.beautysalon.entity;
+package ru.mirea.beautysalon.domain;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -40,6 +41,9 @@ public class Booking {
     @JoinColumn(name = "service_variant_id", nullable = false)
     private ServiceVariant serviceVariant;
 
+    @Column(name = "booked_price", nullable = false, updatable = false, precision = 10, scale = 2)
+    private BigDecimal bookedPrice;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "slot_id", nullable = false)
     private TimeSlot timeSlot;
@@ -59,6 +63,21 @@ public class Booking {
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
+    @org.hibernate.annotations.Generated
+    @Column(name="booking_number", insertable=false, updatable=false)
+    private Long bookingNumber;
+    @Column(name="external_code", nullable=false, updatable=false)
+    private String externalCode;
+    private String comment;
+    private boolean prepaid;
+    @org.hibernate.annotations.Generated(event={org.hibernate.generator.EventType.INSERT, org.hibernate.generator.EventType.UPDATE})
+    @Column(insertable=false, updatable=false)
+    private String priority;
+    @Builder.Default
+    @jakarta.persistence.ElementCollection
+    @jakarta.persistence.CollectionTable(name="booking_tag", joinColumns=@JoinColumn(name="booking_id"))
+    @Column(name="tag")
+    private java.util.Set<String> tags = new java.util.LinkedHashSet<>();
     private boolean archived;
     @jakarta.persistence.Version
     private Long version;

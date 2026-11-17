@@ -14,5 +14,7 @@ import lombok.Setter;
 public class ServiceTypeRequest {
 
     @NotBlank(message = "Название типа услуги не может быть пустым")
+    @jakarta.validation.constraints.Size(max=100)
     private String name;
+    private Boolean active;
 }

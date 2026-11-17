@@ -1,4 +1,5 @@
 package ru.mirea.beautysalon.service;
+import ru.mirea.beautysalon.security.PasswordPolicy;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,10 +14,10 @@ import ru.mirea.beautysalon.dto.client.ClientResponse;
 import ru.mirea.beautysalon.dto.client.ClientUpdateRequest;
 import ru.mirea.beautysalon.dto.client.MasterProfileResponse;
 import ru.mirea.beautysalon.dto.client.PromoteRequest;
-import ru.mirea.beautysalon.entity.BookingStatus;
-import ru.mirea.beautysalon.entity.Client;
-import ru.mirea.beautysalon.entity.Master;
-import ru.mirea.beautysalon.entity.Role;
+import ru.mirea.beautysalon.domain.BookingStatus;
+import ru.mirea.beautysalon.domain.Client;
+import ru.mirea.beautysalon.domain.Master;
+import ru.mirea.beautysalon.domain.Role;
 import ru.mirea.beautysalon.exception.BusinessException;
 import ru.mirea.beautysalon.exception.ConflictException;
 import ru.mirea.beautysalon.exception.EntityNotFoundException;
@@ -73,7 +74,9 @@ public class ClientService {
             throw new ConflictException("Пользователь с телефоном " + phone + " уже существует");
         }
 
+        PasswordPolicy.validate(request.getPassword());
         Client client = Client.builder()
+                .passwordChangeRequired(true)
                 .name(request.getName().trim())
                 .phone(phone)
                 .passwordHash(passwordEncoder.encode(request.getPassword()))

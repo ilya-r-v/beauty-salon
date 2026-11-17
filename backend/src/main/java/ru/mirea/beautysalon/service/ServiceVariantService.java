@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.service.VariantRequest;
 import ru.mirea.beautysalon.dto.service.VariantResponse;
-import ru.mirea.beautysalon.entity.ServiceVariant;
+import ru.mirea.beautysalon.domain.ServiceVariant;
 import ru.mirea.beautysalon.exception.BusinessException;
 import ru.mirea.beautysalon.exception.EntityNotFoundException;
 import ru.mirea.beautysalon.repository.ServiceRepository;
@@ -51,7 +51,7 @@ public class ServiceVariantService {
             throw new BusinessException("Цена должна быть строго больше нуля");
         }
 
-        ru.mirea.beautysalon.entity.Service service = serviceRepository.findById(request.getServiceId())
+        ru.mirea.beautysalon.domain.Service service = serviceRepository.findById(request.getServiceId())
                 .orElseThrow(
                         () -> new EntityNotFoundException("Услуга с ID " + request.getServiceId() + " не найдена"));
 

@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import ru.mirea.beautysalon.entity.Booking;
-import ru.mirea.beautysalon.entity.BookingStatus;
+import ru.mirea.beautysalon.domain.Booking;
+import ru.mirea.beautysalon.domain.BookingStatus;
 
 public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpecificationExecutor<Booking> {
 
@@ -18,7 +18,7 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>, JpaSpec
 
     long countByStatus(BookingStatus status);
 
-    @Query("SELECT COALESCE(SUM(b.serviceVariant.price), 0) FROM Booking b WHERE b.status = :status")
+    @Query("SELECT COALESCE(SUM(b.bookedPrice), 0) FROM Booking b WHERE b.status = :status")
     BigDecimal sumPriceByStatus(@Param("status") BookingStatus status);
 
     boolean existsByClientIdAndStatusIn(UUID clientId, List<BookingStatus> statuses);

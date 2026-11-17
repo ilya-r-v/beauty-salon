@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ru.mirea.beautysalon.entity.Review;
+import ru.mirea.beautysalon.domain.Review;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, UUID> {

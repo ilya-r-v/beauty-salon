@@ -14,6 +14,7 @@ import lombok.Setter;
 public class LoginRequest {
 
     @NotBlank(message = "Телефон обязателен")
+    @jakarta.validation.constraints.Size(max=20)
     private String phone;
 
     @NotBlank(message = "Пароль обязателен")

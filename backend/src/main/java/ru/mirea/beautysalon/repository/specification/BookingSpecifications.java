@@ -9,8 +9,8 @@ import jakarta.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import ru.mirea.beautysalon.entity.Booking;
-import ru.mirea.beautysalon.entity.BookingStatus;
+import ru.mirea.beautysalon.domain.Booking;
+import ru.mirea.beautysalon.domain.BookingStatus;
 
 public class BookingSpecifications {
 

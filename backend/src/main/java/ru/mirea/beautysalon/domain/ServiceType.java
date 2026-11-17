@@ -1,4 +1,4 @@
-package ru.mirea.beautysalon.entity;
+package ru.mirea.beautysalon.domain;
 
 import java.util.UUID;
 
@@ -30,4 +30,5 @@ public class ServiceType {
 
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
+    @Builder.Default private boolean active = true;
 }

@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import ru.mirea.beautysalon.entity.Client;
-import ru.mirea.beautysalon.entity.Role;
+import ru.mirea.beautysalon.domain.Client;
+import ru.mirea.beautysalon.domain.Role;
 
 public interface ClientRepository extends JpaRepository<Client, UUID> {
     Optional<Client> findByPhone(String phone);

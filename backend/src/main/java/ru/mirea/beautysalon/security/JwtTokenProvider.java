@@ -1,4 +1,4 @@
-package ru.mirea.beautysalon.config;
+package ru.mirea.beautysalon.security;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -14,7 +14,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import ru.mirea.beautysalon.entity.Client;
+import ru.mirea.beautysalon.domain.Client;
 
 @Component
 public class JwtTokenProvider {
@@ -23,7 +23,7 @@ public class JwtTokenProvider {
     private final long expirationMs;
 
     public JwtTokenProvider(
-            @Value("${app.jwt.secret:dab6650d-d423-42d6-81b1-8508fd650af2-beauty-salon-secret-key-32b}") String secret,
+            @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expiration-ms:86400000}") long expirationMs) {
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         this.key = new SecretKeySpec(keyBytes, SignatureAlgorithm.HS256.getJcaName());
@@ -36,6 +36,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .subject(client.getId().toString())
+                .claim("cv",client.getCredentialVersion())
                 .claim("phone", client.getPhone())
                 .claim("role", client.getRole())
                 .issuedAt(now)
@@ -52,6 +53,11 @@ public class JwtTokenProvider {
                 .getBody();
 
         return UUID.fromString(claims.getSubject());
+    }
+
+    public long credentialVersion(String token) {
+        Number version = Jwts.parser().verifyWith((javax.crypto.SecretKey)key).build().parseSignedClaims(token).getPayload().get("cv",Long.class);
+        return version == null ? -1 : version.longValue();
     }
 
     public boolean validateToken(String token) {

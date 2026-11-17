@@ -14,7 +14,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class CreateBookingRequest {
+    @jakarta.validation.constraints.Size(max=80)
+    private String externalCode;
+    @jakarta.validation.constraints.Size(max=500)
+    private String comment;
+    private boolean prepaid;
+    private java.util.Set<@jakarta.validation.constraints.NotBlank @jakarta.validation.constraints.Size(max=50) String> tags;
+    @jakarta.validation.constraints.NotNull
     private UUID clientId;
-    private UUID slotId;
-    private UUID serviceVariantId;
+    @jakarta.validation.constraints.NotNull private UUID slotId;
+    @jakarta.validation.constraints.NotNull private UUID serviceVariantId;
 }

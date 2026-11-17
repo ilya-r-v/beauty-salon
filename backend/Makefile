@@ -1,9 +1,9 @@
 .PHONY: up db logs down
 up:
-	docker compose up --build -d --wait
+	docker compose --env-file ../.env up --build -d --wait
 db:
-	docker compose up -d --wait postgres
+	docker compose --env-file ../.env up -d --wait postgres
 logs:
-	docker compose logs -f backend
+	docker compose --env-file ../.env logs -f backend
 down:
-	docker compose down
+	docker compose --env-file ../.env down

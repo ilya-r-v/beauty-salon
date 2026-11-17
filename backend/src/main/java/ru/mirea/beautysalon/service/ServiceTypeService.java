@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.service.ServiceTypeRequest;
 import ru.mirea.beautysalon.dto.service.ServiceTypeResponse;
-import ru.mirea.beautysalon.entity.ServiceType;
+import ru.mirea.beautysalon.domain.ServiceType;
 import ru.mirea.beautysalon.exception.BusinessException;
 import ru.mirea.beautysalon.exception.ConflictException;
 import ru.mirea.beautysalon.repository.ServiceTypeRepository;
@@ -25,9 +25,17 @@ public class ServiceTypeService {
                 .stream()
                 .map(type -> ServiceTypeResponse.builder()
                         .id(type.getId())
-                        .name(type.getName())
+                        .name(type.getName()).active(type.isActive())
                         .build())
                 .toList();
+    }
+
+    @Transactional
+    public ServiceTypeResponse update(java.util.UUID id, ServiceTypeRequest request) {
+        ServiceType type = serviceTypeRepository.findById(id).orElseThrow(() -> new ru.mirea.beautysalon.exception.EntityNotFoundException("Тип услуги не найден"));
+        type.setName(request.getName().strip());
+        if (request.getActive() != null) type.setActive(request.getActive());
+        return ServiceTypeResponse.builder().id(id).name(type.getName()).active(type.isActive()).build();
     }
 
     @Transactional

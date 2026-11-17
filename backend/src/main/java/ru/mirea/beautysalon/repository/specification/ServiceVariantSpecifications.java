@@ -9,7 +9,7 @@ import jakarta.persistence.criteria.Predicate;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import ru.mirea.beautysalon.entity.ServiceVariant;
+import ru.mirea.beautysalon.domain.ServiceVariant;
 
 public class ServiceVariantSpecifications {
 

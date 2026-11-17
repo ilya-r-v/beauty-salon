@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
-import ru.mirea.beautysalon.entity.ServiceVariant;
+import ru.mirea.beautysalon.domain.ServiceVariant;
 
 @Repository
 public interface ServiceVariantRepository

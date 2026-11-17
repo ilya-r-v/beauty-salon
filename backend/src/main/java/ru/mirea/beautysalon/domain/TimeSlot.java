@@ -1,4 +1,4 @@
-package ru.mirea.beautysalon.entity;
+package ru.mirea.beautysalon.domain;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -6,10 +6,11 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -21,32 +22,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "master_profile")
+@Table(name = "time_slot")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Master {
+public class TimeSlot {
 
     @Id
-    @Column(name = "client_id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "master_id", nullable = false)
+    private Master master;
 
-    @Column(name = "avatar_url", length = 255)
-    private String avatarUrl;
+    @Column(name = "start_time", nullable = false)
+    private OffsetDateTime startTime;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
-    @Builder.Default
-    @Column(name = "rating", nullable = false)
-    private Float rating = 0.0f;
+    @Column(name = "end_time", nullable = false)
+    private OffsetDateTime endTime;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -62,9 +58,6 @@ public class Master {
         }
         if (this.updatedAt == null) {
             this.updatedAt = now;
-        }
-        if (this.rating == null) {
-            this.rating = 0.0f;
         }
     }
 

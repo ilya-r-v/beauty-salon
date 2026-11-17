@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import ru.mirea.beautysalon.entity.BookingStatus;
-import ru.mirea.beautysalon.entity.TimeSlot;
+import ru.mirea.beautysalon.domain.BookingStatus;
+import ru.mirea.beautysalon.domain.TimeSlot;
 
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, UUID> {
 

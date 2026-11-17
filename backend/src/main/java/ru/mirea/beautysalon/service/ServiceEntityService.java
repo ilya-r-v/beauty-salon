@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.service.ServiceRequest;
 import ru.mirea.beautysalon.dto.service.ServiceResponse;
-import ru.mirea.beautysalon.entity.Master;
-import ru.mirea.beautysalon.entity.ServiceType;
+import ru.mirea.beautysalon.domain.Master;
+import ru.mirea.beautysalon.domain.ServiceType;
 import ru.mirea.beautysalon.exception.BusinessException;
 import ru.mirea.beautysalon.exception.ConflictException;
 import ru.mirea.beautysalon.exception.EntityNotFoundException;
@@ -32,7 +32,7 @@ public class ServiceEntityService {
 
     @Transactional(readOnly = true)
     public List<ServiceResponse> getAllServices(UUID masterId, UUID typeId) {
-        Specification<ru.mirea.beautysalon.entity.Service> spec = ServiceSpecifications.filterServices(masterId,
+        Specification<ru.mirea.beautysalon.domain.Service> spec = ServiceSpecifications.filterServices(masterId,
                 typeId);
 
         return serviceRepository.findAll(spec)
@@ -43,7 +43,7 @@ public class ServiceEntityService {
 
     @Transactional(readOnly = true)
     public ServiceResponse getServiceById(UUID id) {
-        ru.mirea.beautysalon.entity.Service service = serviceRepository.findById(id)
+        ru.mirea.beautysalon.domain.Service service = serviceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Услуга с ID " + id + " не найдена"));
         return mapToResponse(service);
     }
@@ -61,7 +61,8 @@ public class ServiceEntityService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Тип услуги с ID " + request.getServiceTypeId() + " не найден"));
 
-        ru.mirea.beautysalon.entity.Service service = ru.mirea.beautysalon.entity.Service.builder()
+        if (!serviceType.isActive()) throw new BusinessException("Тип услуги отключён");
+        ru.mirea.beautysalon.domain.Service service = ru.mirea.beautysalon.domain.Service.builder()
                 .title(request.getTitle().trim())
                 .master(master)
                 .serviceType(serviceType)
@@ -72,7 +73,7 @@ public class ServiceEntityService {
 
     @Transactional
     public void deleteService(UUID id) {
-        ru.mirea.beautysalon.entity.Service service = serviceRepository.findById(id)
+        ru.mirea.beautysalon.domain.Service service = serviceRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Услуга с ID " + id + " не найдена"));
 
         if (serviceVariantRepository.existsByServiceId(id)) {
@@ -82,7 +83,7 @@ public class ServiceEntityService {
         serviceRepository.delete(service);
     }
 
-    private ServiceResponse mapToResponse(ru.mirea.beautysalon.entity.Service service) {
+    private ServiceResponse mapToResponse(ru.mirea.beautysalon.domain.Service service) {
         return ServiceResponse.builder()
                 .id(service.getId())
                 .title(service.getTitle())

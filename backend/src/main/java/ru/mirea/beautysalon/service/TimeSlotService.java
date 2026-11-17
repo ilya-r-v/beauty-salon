@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.master.TimeSlotResponse;
-import ru.mirea.beautysalon.entity.BookingStatus;
-import ru.mirea.beautysalon.entity.TimeSlot;
+import ru.mirea.beautysalon.domain.BookingStatus;
+import ru.mirea.beautysalon.domain.TimeSlot;
 import ru.mirea.beautysalon.repository.TimeSlotRepository;
 
 @Service

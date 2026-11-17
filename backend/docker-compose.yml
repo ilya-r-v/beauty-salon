@@ -16,10 +16,15 @@ services:
       timeout: 5s
       retries: 10
   backend:
-    build: .
+    build:
+      context: .
+      additional_contexts:
+        frontend_src: ../frontend
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
     environment:
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:?Set BOOTSTRAP_ADMIN_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET}
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: ${DB_NAME:-beauty_salon}

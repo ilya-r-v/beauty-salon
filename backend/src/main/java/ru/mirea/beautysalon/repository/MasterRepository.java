@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ru.mirea.beautysalon.entity.Master;
+import ru.mirea.beautysalon.domain.Master;
 
 @Repository
 public interface MasterRepository extends JpaRepository<Master, UUID> {

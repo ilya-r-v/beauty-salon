@@ -1,4 +1,5 @@
-package ru.mirea.beautysalon.config;
+package ru.mirea.beautysalon.security;
+import ru.mirea.beautysalon.security.JwtTokenProvider;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
-import ru.mirea.beautysalon.entity.Client;
+import ru.mirea.beautysalon.domain.Client;
 import ru.mirea.beautysalon.repository.ClientRepository;
 
 @Component
@@ -39,11 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UUID userId = tokenProvider.getUserIdFromToken(token);
 
             Client client = clientRepository.findById(userId).orElse(null);
-            if (client != null && client.isActive()) {
+            if (client != null && client.isActive() && client.getCredentialVersion() == tokenProvider.credentialVersion(token)) {
                 var auth = new UsernamePasswordAuthenticationToken(
                         client.getId(),
                         null,
-                        List.of(new SimpleGrantedAuthority("ROLE_" + client.getRole())));
+                        List.of(new SimpleGrantedAuthority(client.isPasswordChangeRequired() ? "PASSWORD_CHANGE" : "ROLE_" + client.getRole())));
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
@@ -56,6 +57,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
+        }
+        String path = request.getRequestURI();
+        if (request.getMethod().equals("GET") && (path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")) && request.getCookies()!=null) {
+            for (var cookie : request.getCookies()) if ("salon_docs".equals(cookie.getName())) return cookie.getValue();
         }
         return null;
     }

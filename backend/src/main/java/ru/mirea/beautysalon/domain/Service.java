@@ -1,4 +1,4 @@
-package ru.mirea.beautysalon.entity;
+package ru.mirea.beautysalon.domain;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;

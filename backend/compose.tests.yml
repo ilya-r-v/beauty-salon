@@ -1,0 +1,18 @@
+services:
+  tests:
+    build:
+      context: .
+      target: builder
+      additional_contexts:
+        frontend_src: ../frontend
+    command: ["mvn","-B","test"]
+    environment:
+      DB_HOST: postgres
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy

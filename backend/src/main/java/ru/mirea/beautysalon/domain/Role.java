@@ -1,4 +1,4 @@
-package ru.mirea.beautysalon.entity;
+package ru.mirea.beautysalon.domain;
 
 public enum Role {
     CLIENT,

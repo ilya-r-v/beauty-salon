@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import ru.mirea.beautysalon.dto.master.TimeSlotResponse;
-import ru.mirea.beautysalon.entity.BookingStatus;
+import ru.mirea.beautysalon.domain.BookingStatus;
 import ru.mirea.beautysalon.repository.TimeSlotRepository;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.master.MasterResponse;
-import ru.mirea.beautysalon.entity.Master;
+import ru.mirea.beautysalon.domain.Master;
 import ru.mirea.beautysalon.exception.EntityNotFoundException;
 import ru.mirea.beautysalon.repository.MasterRepository;
 

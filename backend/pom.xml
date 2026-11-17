@@ -11,8 +11,8 @@
 	<groupId>ru.mirea</groupId>
 	<artifactId>beauty-salon</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>Beauty Salon</name>
+	<description>Система записи в салон красоты</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -30,7 +30,8 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
-		<!-- Web -->
+		<dependency><groupId>org.apache.commons</groupId><artifactId>commons-csv</artifactId><version>1.14.1</version></dependency>
+        <!-- Web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

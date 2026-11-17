@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.dto.statistics.StatisticsResponse;
-import ru.mirea.beautysalon.entity.BookingStatus;
-import ru.mirea.beautysalon.entity.Role;
+import ru.mirea.beautysalon.domain.BookingStatus;
+import ru.mirea.beautysalon.domain.Role;
 import ru.mirea.beautysalon.repository.BookingRepository;
 import ru.mirea.beautysalon.repository.ClientRepository;
 import ru.mirea.beautysalon.repository.MasterRepository;

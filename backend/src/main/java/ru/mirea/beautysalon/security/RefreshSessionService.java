@@ -1,4 +1,4 @@
-package ru.mirea.beautysalon.service;
+package ru.mirea.beautysalon.security;
 
 import java.security.*;
 import java.nio.charset.StandardCharsets;
@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
 import ru.mirea.beautysalon.repository.ClientRepository;
-import ru.mirea.beautysalon.config.JwtTokenProvider;
+import ru.mirea.beautysalon.security.JwtTokenProvider;
 import ru.mirea.beautysalon.dto.auth.AuthResponse;
 
 @Service

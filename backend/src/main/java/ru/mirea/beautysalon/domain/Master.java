@@ -1,15 +1,15 @@
-package ru.mirea.beautysalon.entity;
+package ru.mirea.beautysalon.domain;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -21,41 +21,38 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "client")
+@Table(name = "master_profile")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Client {
+public class Master {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "client_id")
     private UUID id;
 
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "client_id")
+    private Client client;
 
-    @Column(name = "phone", nullable = false, unique = true, length = 20)
-    private String phone;
+    @Column(name = "avatar_url", length = 255)
+    private String avatarUrl;
 
-    @Column(name = "password_hash", nullable = false, length = 255)
-    private String passwordHash;
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 
     @Builder.Default
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, length = 20)
-    private Role role = Role.CLIENT;
+    @Column(name = "rating", nullable = false)
+    private Float rating = 0.0f;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
-
-    @Builder.Default
-    private boolean active = true;
-    private boolean passwordChangeRequired;
 
     @PrePersist
     protected void onCreate() {
@@ -66,11 +63,13 @@ public class Client {
         if (this.updatedAt == null) {
             this.updatedAt = now;
         }
+        if (this.rating == null) {
+            this.rating = 0.0f;
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = OffsetDateTime.now();
     }
-
 }

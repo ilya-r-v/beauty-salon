@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.mirea.beautysalon.entity.BookingStatus;
+import ru.mirea.beautysalon.domain.BookingStatus;
 
 @Getter
 @Setter
@@ -18,6 +18,13 @@ import ru.mirea.beautysalon.entity.BookingStatus;
 @Builder
 public class BookingResponse {
     private UUID id;
+    private Long bookingNumber;
+    private String externalCode;
+    private String comment;
+    private boolean prepaid;
+    private String priority;
+    private java.util.Set<String> tags;
+    private OffsetDateTime updatedAt;
     private boolean archived;
     private Long version;
     private UUID clientId;
@@ -36,8 +43,6 @@ public class BookingResponse {
     @Builder
     public static class SlotDto {
         private UUID id;
-    private boolean archived;
-    private Long version;
         private UUID masterId;
         private String masterName;
         private OffsetDateTime startTime;

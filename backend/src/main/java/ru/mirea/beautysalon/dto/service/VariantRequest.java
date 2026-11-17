@@ -19,12 +19,14 @@ import lombok.Setter;
 public class VariantRequest {
 
     @NotBlank(message = "Название варианта услуги не может быть пустым")
+    @jakarta.validation.constraints.Size(max=150)
     private String title;
 
     private String description;
 
     @NotNull(message = "Цена обязательна")
     @DecimalMin(value = "0.01", message = "Цена должна быть больше нуля")
+    @jakarta.validation.constraints.Digits(integer=8,fraction=2)
     private BigDecimal price;
 
     @NotNull(message = "ID услуги обязателен")

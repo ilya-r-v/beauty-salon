@@ -17,6 +17,7 @@ import lombok.Setter;
 public class ServiceRequest {
 
     @NotBlank(message = "Название услуги не может быть пустым")
+    @jakarta.validation.constraints.Size(max=150)
     private String title;
 
     @NotNull(message = "ID мастера обязателен")

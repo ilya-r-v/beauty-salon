@@ -16,4 +16,5 @@ import lombok.Setter;
 public class ServiceTypeResponse {
     private UUID id;
     private String name;
+    @Builder.Default private boolean active = true;
 }
